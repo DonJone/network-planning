@@ -1,0 +1,19 @@
+# 自定义 AI 与 Google 核心业务规则 (解构自 mihomo_Region.yaml)
+DOMAIN-KEYWORD,antigravity
+DOMAIN-SUFFIX,adtrafficquality.google
+DOMAIN-SUFFIX,fcmatch.google.com
+DOMAIN-SUFFIX,googleanalytics.com
+DOMAIN-SUFFIX,google-analytics.com
+DOMAIN-SUFFIX,app-measurement.com
+DOMAIN-SUFFIX,googlesyndication.com
+DOMAIN-SUFFIX,doubleclick.net
+DOMAIN-SUFFIX,2mdn.net
+DOMAIN-SUFFIX,googleadservices.com
+DOMAIN-SUFFIX,adservice.google.com
+DOMAIN-SUFFIX,googlesyndication-cn.com
+DOMAIN-SUFFIX,doubleclick-cn.net
+DOMAIN-SUFFIX,googleadservices-cn.com
+DOMAIN-SUFFIX,googletagmanager-cn.com
+DOMAIN-SUFFIX,gstatic.com
+DOMAIN-SUFFIX,googleusercontent.com
+DOMAIN-SUFFIX,googleapis.com

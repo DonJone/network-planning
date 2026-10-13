@@ -1,0 +1,58 @@
+name: Build & Release Rulesets
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # 每天 UTC 03:00 (北京时间 11:00) 自动触发构建
+  workflow_dispatch:      # 支持手动触发
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
+      - "custom/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Fetch and Generate Rule Sources
+        run: |
+          python3 scripts/build.py
+
+      - name: Install Compilers (Mihomo & Sing-box)
+        run: |
+          mkdir -p bin
+          # 下载 Mihomo Linux x86_64
+          curl -sL https://github.com/MetaCubeX/mihomo/releases/download/v1.19.3/mihomo-linux-amd64-v1.19.3.gz | gzip -d > bin/mihomo
+          chmod +x bin/mihomo
+
+          # 下载 Sing-box Linux x86_64
+          curl -sL https://github.com/SagerNet/sing-box/releases/download/v1.11.4/sing-box-1.11.4-linux-amd64.tar.gz | tar -xz --strip-components=1 -C bin/ "*/sing-box"
+          chmod +x bin/sing-box
+
+      - name: Compile Binary Rules (.mrs & .srs)
+        run: |
+          chmod +x scripts/compile.sh
+          ./scripts/compile.sh
+
+      - name: Deploy to Release Branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 提交生成的规则集到 release 分支
+          git checkout -B release
+          git add rules/
+          git commit -m "Auto-build rulesets: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+          git push -f origin release

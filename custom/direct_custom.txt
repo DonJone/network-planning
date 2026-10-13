@@ -1,0 +1,32 @@
+# 自定义直连规则 (解构自 mihomo_Region.yaml 及各平台专属配置)
+DOMAIN-SUFFIX,campus.edu.cn
+DOMAIN-KEYWORD,libvio
+DOMAIN,train.suuwu.de
+DOMAIN,mlc.once.im
+DOMAIN-KEYWORD,smart-vod
+DOMAIN,smart.uhdnow.com
+DOMAIN,speed.uhdnow.com
+DOMAIN-SUFFIX,uhdnow.online
+DOMAIN-KEYWORD,douyin
+
+# 字节跳动国内核心服务
+DOMAIN-SUFFIX,bytedance.com
+DOMAIN-SUFFIX,snssdk.com
+DOMAIN-SUFFIX,zijieapi.com
+DOMAIN-SUFFIX,byteimg.com
+DOMAIN-SUFFIX,bytetos.com
+DOMAIN-SUFFIX,ibytedtos.com
+DOMAIN-SUFFIX,ibytedapm.com
+
+# 苹果/微软直连与Push服务
+DOMAIN-SUFFIX,push.apple.com
+DOMAIN-SUFFIX,appleid.apple.com
+DOMAIN-SUFFIX,gsa.apple.com
+DOMAIN-SUFFIX,idmsa.apple.com
+DOMAIN-SUFFIX,icloud.com.cn
+DOMAIN-SUFFIX,itunes.apple.com
+
+# NTP 授时服务
+DOMAIN-KEYWORD,ntp
+DOMAIN-SUFFIX,pool.ntp.org
+DOMAIN-SUFFIX,ntsc.ac.cn
