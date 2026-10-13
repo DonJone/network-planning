@@ -7,9 +7,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "scripts/**"
-      - "custom/**"
 
 jobs:
   build:
@@ -20,6 +17,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -51,8 +50,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # 提交生成的规则集到 release 分支
+          # 切换并孤立创建/重置 release 分支
           git checkout -B release
-          git add rules/
+          git add -f rules/
           git commit -m "Auto-build rulesets: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push -f origin release
