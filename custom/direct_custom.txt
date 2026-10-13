@@ -30,3 +30,21 @@ DOMAIN-SUFFIX,itunes.apple.com
 DOMAIN-KEYWORD,ntp
 DOMAIN-SUFFIX,pool.ntp.org
 DOMAIN-SUFFIX,ntsc.ac.cn
+
+# ============================================================
+# 游戏下载 CDN 核心域名 (强制 100% 直连，不走代理)
+# ============================================================
+# Steam 游戏切片下载、国内特化 CDN 与分发服务
+DOMAIN-SUFFIX,steamcontent.com
+DOMAIN-SUFFIX,steamserver.net
+DOMAIN-SUFFIX,steamchina.com
+DOMAIN-SUFFIX,wmsjsteam.com
+DOMAIN-SUFFIX,dl.steam.clngaa.com
+DOMAIN,steampipe.akamaized.net
+DOMAIN,alibaba.cdn.steampipe.steamcontent.com
+DOMAIN,steampipe-partner.akamaized.net
+DOMAIN,steampipe-kr.akamaized.net
+
+# Epic Games 游戏包体下载 CDN
+DOMAIN-SUFFIX,download.epicgames.com
+DOMAIN-SUFFIX,fastly-download.epicgames.com

@@ -1,4 +1,4 @@
-# 自定义亚太通讯规则 (解构自 mihomo_Region.yaml)
+# 自定义亚太通讯与游戏平台商城/社交规则 (解构自 mihomo_Region.yaml 及平台专属规则)
 
 # Telegram 核心通信网段 (避让 QUIC 拦截，保证纯 IP MTProto 连接)
 IP-CIDR,91.105.192.0/23,no-resolve
@@ -8,3 +8,29 @@ IP-CIDR,91.108.16.0/21,no-resolve
 IP-CIDR,91.108.56.0/22,no-resolve
 IP-CIDR,95.161.64.0/20,no-resolve
 IP-CIDR,149.154.160.0/20,no-resolve
+
+# ============================================================
+# 游戏平台商城、社交、社区 (强制走亚太低延迟节点)
+# ============================================================
+# Steam 商店、社区、好友聊天、静态封面素材与创意工坊
+DOMAIN-SUFFIX,steampowered.com
+DOMAIN-SUFFIX,steamcommunity.com
+DOMAIN-SUFFIX,steamstatic.com
+DOMAIN-SUFFIX,steam-chat.com
+DOMAIN-SUFFIX,steamgames.com
+DOMAIN-SUFFIX,steamapi.com
+DOMAIN-SUFFIX,steam-api.com
+DOMAIN-SUFFIX,steamusercontent.com
+DOMAIN-SUFFIX,steamvideo-a.akamaihd.net
+DOMAIN,steambroadcast.akamaized.net
+DOMAIN,steamcommunity-a.akamaihd.net
+DOMAIN,steamstore-a.akamaihd.net
+DOMAIN,steamusercontent-a.akamaihd.net
+DOMAIN,steamuserimages-a.akamaihd.net
+
+# Epic Games 客户端、商城、登录鉴权与虚幻引擎社区
+DOMAIN-SUFFIX,epicgames.com
+DOMAIN-SUFFIX,epicgames.dev
+DOMAIN-SUFFIX,epicgames.org
+DOMAIN-SUFFIX,epicgamescdn.com
+DOMAIN-SUFFIX,unrealengine.com
