@@ -205,15 +205,25 @@ def main():
     print("\n[*] 正在进行全量规则去重与跨生态导出...")
 
     # 自定义规则具备最高权威性：
-    # 1. apac_custom 中的域名（如 Steam 商城/社区、Epic）严禁被 upstream direct 误吞
+    # 1. apac_custom 中的域名（如 Steam 商城/社区、Epic、Telegram）严禁被 direct 误吞
     # 2. direct_custom 中的域名（如 Steam 下载 steamcontent、Epic 下载）严禁被 proxy/lowrate 误吞
+    # 3. lowrate_custom 及流媒体（YouTube、Google 相册/网盘、Emby、GitHub）严禁被 ai 中的 google.list 误吞
     apac_custom_domains = {val for rtype, val in load_local_file("custom/apac_custom.txt") if rtype in ("DOMAIN-SUFFIX", "DOMAIN")}
     direct_custom_domains = {val for rtype, val in load_local_file("custom/direct_custom.txt") if rtype in ("DOMAIN-SUFFIX", "DOMAIN")}
+    lowrate_custom_domains = {val for rtype, val in load_local_file("custom/lowrate_custom.txt") if rtype in ("DOMAIN-SUFFIX", "DOMAIN")}
+
+    def is_youtube_or_streaming(domain: str) -> bool:
+        if domain in lowrate_custom_domains:
+            return True
+        d = domain.lower()
+        if "youtube" in d or "googlevideo" in d or "ytimg" in d or d.endswith("youtu.be"):
+            return True
+        return False
 
     # 跨分类冲突消除优先级：
     # 1. direct (直连白名单与国内大盘最高保护，但排除明确归属于 apac 的商城与社区域名)
     # 2. apac   (专属即时通讯 Telegram/X 与 Steam/Epic 商城/社区)
-    # 3. ai     (专属 AI 模型与 Google 核心)
+    # 3. ai     (专属 AI 模型与 Google 核心，排除流媒体与 YouTube)
     # 4. lowrate (专属流媒体与大吞吐，最后承接通用海外 proxy 兜底)
     priority_order = ["direct", "apac", "ai", "lowrate"]
     seen_domains = set()
@@ -226,11 +236,14 @@ def main():
         filtered_rules = []
         for rtype, val in raw_rules:
             # 权威冲突保护：
-            if cat_key == "direct" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and val in apac_custom_domains:
-                # 排除上游误标为 direct 的 Steam 商城/社区域名
+            if cat_key == "direct" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and (val in apac_custom_domains or "github" in val.lower()):
+                # 排除上游误标为 direct 的 Steam 商城/社区域名，以及误包含在 microsoft.list 中的 GitHub 域名
                 continue
             if cat_key in ("apac", "ai", "lowrate") and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and val in direct_custom_domains:
                 # 排除上游误标为 proxy 的游戏下载 CDN 域名
+                continue
+            if cat_key == "ai" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and is_youtube_or_streaming(val):
+                # 排除上游 google.list 中混杂的 YouTube/流媒体域名，留给 lowrate 组
                 continue
 
             if rtype in ("DOMAIN-SUFFIX", "DOMAIN"):

@@ -11,3 +11,4 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+cache.db
