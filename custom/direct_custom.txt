@@ -18,13 +18,16 @@ DOMAIN-SUFFIX,bytetos.com
 DOMAIN-SUFFIX,ibytedtos.com
 DOMAIN-SUFFIX,ibytedapm.com
 
-# 苹果/微软直连与Push服务
+# 苹果核心直连、APNs与CDN下载 (兼顾国内与海外 Apple ID 登录退出及音乐同步)
 DOMAIN-SUFFIX,push.apple.com
 DOMAIN-SUFFIX,appleid.apple.com
 DOMAIN-SUFFIX,gsa.apple.com
 DOMAIN-SUFFIX,idmsa.apple.com
 DOMAIN-SUFFIX,icloud.com.cn
-DOMAIN-SUFFIX,itunes.apple.com
+DOMAIN-SUFFIX,aaplimg.com
+DOMAIN,iosapps.itunes.apple.com
+DOMAIN,osxapps.itunes.apple.com
+DOMAIN,captive.apple.com
 
 # NTP 授时服务
 DOMAIN-KEYWORD,ntp

@@ -220,8 +220,22 @@ def main():
             return True
         return False
 
+    def is_apple_proxy_service(domain: str) -> bool:
+        if domain in direct_custom_domains:
+            return False
+        if domain in lowrate_custom_domains:
+            return True
+        d = domain.lower()
+        if d in ("sync.itunes.apple.com", "upp.itunes.apple.com", "play.itunes.apple.com",
+                 "api.appstore.apple.com", "bag.itunes.apple.com", "buy.itunes.apple.com",
+                 "itunes.apple.com", "music.apple.com", "amp-api.music.apple.com"):
+            return True
+        if d.endswith(".itunes.apple.com"):
+            return True
+        return False
+
     # 跨分类冲突消除优先级：
-    # 1. direct (直连白名单与国内大盘最高保护，但排除明确归属于 apac 的商城与社区域名)
+    # 1. direct (直连白名单与国内大盘最高保护，但排除明确归属于 apac 的商城与社区域名，以及 Apple 海外Storefront/Music云同步)
     # 2. apac   (专属即时通讯 Telegram/X 与 Steam/Epic 商城/社区)
     # 3. ai     (专属 AI 模型与 Google 核心，排除流媒体与 YouTube)
     # 4. lowrate (专属流媒体与大吞吐，最后承接通用海外 proxy 兜底)
@@ -236,11 +250,13 @@ def main():
         filtered_rules = []
         for rtype, val in raw_rules:
             # 权威冲突保护：
-            if cat_key == "direct" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and (val in apac_custom_domains or "github" in val.lower()):
-                # 排除上游误标为 direct 的 Steam 商城/社区域名，以及误包含在 microsoft.list 中的 GitHub 域名
+            if cat_key == "direct" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and (
+                val in apac_custom_domains or "github" in val.lower() or is_apple_proxy_service(val)
+            ):
+                # 排除上游误标为 direct 的 Steam 商城/社区、GitHub，以及 Apple 音乐云同步与Storefront 切换服务 (留给 lowrate 组)
                 continue
             if cat_key in ("apac", "ai", "lowrate") and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and val in direct_custom_domains:
-                # 排除上游误标为 proxy 的游戏下载 CDN 域名
+                # 排除上游误标为 proxy 的游戏下载 CDN 域名与 Apple 直连/下载 CDN
                 continue
             if cat_key == "ai" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and is_youtube_or_streaming(val):
                 # 排除上游 google.list 中混杂的 YouTube/流媒体域名，留给 lowrate 组

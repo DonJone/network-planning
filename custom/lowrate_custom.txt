@@ -1,5 +1,14 @@
 # 自定义低倍/大流量规则 (解构自 mihomo_Region.yaml)
 
+# Apple 海外 Storefront 与 Apple Music 云端资料库同步专线
+DOMAIN,sync.itunes.apple.com
+DOMAIN,upp.itunes.apple.com
+DOMAIN,play.itunes.apple.com
+DOMAIN,api.appstore.apple.com
+DOMAIN,bag.itunes.apple.com
+DOMAIN,buy.itunes.apple.com
+DOMAIN-SUFFIX,music.apple.com
+
 # YouTube 及 Music API
 DOMAIN,music.youtube.com
 DOMAIN,youtubei.googleapis.com
