@@ -709,6 +709,7 @@ DOMAIN-SUFFIX,7mmtv.tv
 DOMAIN-SUFFIX,7tb.cc
 DOMAIN-SUFFIX,7tv.app
 DOMAIN-SUFFIX,7tv.io
+DOMAIN-SUFFIX,7x24hrs.com
 DOMAIN-SUFFIX,8-d.com
 DOMAIN-SUFFIX,8008206616.com
 DOMAIN-SUFFIX,8111y.top
@@ -2624,7 +2625,6 @@ DOMAIN-SUFFIX,archive.md
 DOMAIN-SUFFIX,archive.org
 DOMAIN-SUFFIX,archive.ph
 DOMAIN-SUFFIX,archive.today
-DOMAIN-SUFFIX,archive.torrentonline.cc
 DOMAIN-SUFFIX,archive.vn
 DOMAIN-SUFFIX,archiveofourown.com
 DOMAIN-SUFFIX,archiveofourown.net
@@ -2747,6 +2747,7 @@ DOMAIN-SUFFIX,asiaone.com
 DOMAIN-SUFFIX,asiasociety.org
 DOMAIN-SUFFIX,asiatgp.com
 DOMAIN-SUFFIX,asiatoday.us
+DOMAIN-SUFFIX,asiatorrent.giize.com
 DOMAIN-SUFFIX,asjmapihost.cc
 DOMAIN-SUFFIX,ask.com
 DOMAIN-SUFFIX,askfacebook.net
@@ -22421,6 +22422,7 @@ DOMAIN-SUFFIX,schwab.com.cn
 DOMAIN-SUFFIX,schwab.com.hk
 DOMAIN-SUFFIX,schwab.com.sg
 DOMAIN-SUFFIX,schwabassetmanagement.com
+DOMAIN-SUFFIX,schwabcdn.com
 DOMAIN-SUFFIX,schwabplan.com
 DOMAIN-SUFFIX,schwarz
 DOMAIN-SUFFIX,sci-hub.it.nf
@@ -25186,6 +25188,8 @@ DOMAIN-SUFFIX,timesofindia.indiatimes.com
 DOMAIN-SUFFIX,timestalks.com
 DOMAIN-SUFFIX,timeweb.cloud
 DOMAIN-SUFFIX,timeweb.com
+DOMAIN-SUFFIX,timeweb.tech
+DOMAIN-SUFFIX,timewebcloud.kz
 DOMAIN-SUFFIX,timi1.me
 DOMAIN-SUFFIX,timo0.com
 DOMAIN-SUFFIX,timsah.com
@@ -25440,7 +25444,6 @@ DOMAIN-SUFFIX,tpi.org.tw
 DOMAIN-SUFFIX,tpornstars.com
 DOMAIN-SUFFIX,tr
 DOMAIN-SUFFIX,tr.abiir.top
-DOMAIN-SUFFIX,tr.abir.ga
 DOMAIN-SUFFIX,tr.btube3.com
 DOMAIN-SUFFIX,tr.burnabyhighstar.com
 DOMAIN-SUFFIX,tr.com
@@ -25454,6 +25457,7 @@ DOMAIN-SUFFIX,tracker.7471.top
 DOMAIN-SUFFIX,tracker.aruku.ovh
 DOMAIN-SUFFIX,tracker.bittor.pw
 DOMAIN-SUFFIX,tracker.breizh.pm
+DOMAIN-SUFFIX,tracker.bt4g.com
 DOMAIN-SUFFIX,tracker.cn.nyaa.net
 DOMAIN-SUFFIX,tracker.corpscorp.online
 DOMAIN-SUFFIX,tracker.ddunlimited.net
@@ -25463,6 +25467,7 @@ DOMAIN-SUFFIX,tracker.dler.org
 DOMAIN-SUFFIX,tracker.ducks.party
 DOMAIN-SUFFIX,tracker.farted.net
 DOMAIN-SUFFIX,tracker.filemail.com
+DOMAIN-SUFFIX,tracker.flatuslifir.is
 DOMAIN-SUFFIX,tracker.fnix.net
 DOMAIN-SUFFIX,tracker.foreverpirates.co
 DOMAIN-SUFFIX,tracker.gg
@@ -25489,9 +25494,9 @@ DOMAIN-SUFFIX,tracker.qu.ax
 DOMAIN-SUFFIX,tracker.renfei.net
 DOMAIN-SUFFIX,tracker.skynetcloud.site
 DOMAIN-SUFFIX,tracker.skyts.net
-DOMAIN-SUFFIX,tracker.theoks.net
 DOMAIN-SUFFIX,tracker.torrent.eu.org
 DOMAIN-SUFFIX,tracker.torrents.observer
+DOMAIN-SUFFIX,tracker.tryhackx.org
 DOMAIN-SUFFIX,tracker.waaa.moe
 DOMAIN-SUFFIX,tracker.wildkat.net
 DOMAIN-SUFFIX,tracker.willy.pro
@@ -27786,6 +27791,7 @@ DOMAIN-SUFFIX,whosthehost.com
 DOMAIN-SUFFIX,whotalking.com
 DOMAIN-SUFFIX,whvn.cc
 DOMAIN-SUFFIX,whvuxtub.com
+DOMAIN-SUFFIX,whybother.torrentonline.cc
 DOMAIN-SUFFIX,whychoosehorizon.com
 DOMAIN-SUFFIX,whychooseview.com
 DOMAIN-SUFFIX,whychoosevmwareeuc.com
@@ -29958,6 +29964,7 @@ DOMAIN,login.microsoftonline.com
 DOMAIN,store.ui.com.cn
 DOMAIN,v1-vod1.uhdnow.com
 DOMAIN,v1-vod2.uhdnow.com
+DOMAIN,v1.uhdgo.com
 DOMAIN,v1.uhdnow.com
 DOMAIN,voice.telephony.goog
 DOMAIN,youtubei.googleapis.com

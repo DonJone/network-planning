@@ -27,8 +27,10 @@ DOMAIN-KEYWORD,github
 # 流媒体与 Emby 服务
 DOMAIN-KEYWORD,emby
 DOMAIN,v1.uhdnow.com
+DOMAIN,v1.uhdgo.com
 DOMAIN,v1-vod1.uhdnow.com
 DOMAIN,v1-vod2.uhdnow.com
+DOMAIN-SUFFIX,forgecdn.net
 DOMAIN-SUFFIX,bb.111848.xyz
 DOMAIN-KEYWORD,023168
 DOMAIN-KEYWORD,1024

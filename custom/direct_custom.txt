@@ -4,6 +4,7 @@ DOMAIN-KEYWORD,libvio
 DOMAIN,train.suuwu.de
 DOMAIN,mlc.once.im
 DOMAIN-KEYWORD,smart-vod
+DOMAIN,www.uhdnow.com
 DOMAIN,smart.uhdnow.com
 DOMAIN,speed.uhdnow.com
 DOMAIN-SUFFIX,uhdnow.online

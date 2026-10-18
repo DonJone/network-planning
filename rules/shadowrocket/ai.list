@@ -239,6 +239,7 @@ DOMAIN-SUFFIX,cursor-cdn.com
 DOMAIN-SUFFIX,cursor.com
 DOMAIN-SUFFIX,cursor.sh
 DOMAIN-SUFFIX,cursorapi.com
+DOMAIN-SUFFIX,cursorvm.com
 DOMAIN-SUFFIX,dart.dev
 DOMAIN-SUFFIX,dartlang.org
 DOMAIN-SUFFIX,dartpad.dev
@@ -714,6 +715,7 @@ DOMAIN-SUFFIX,oneworldmanystories.com
 DOMAIN-SUFFIX,opal.google
 DOMAIN-SUFFIX,opal.google.com
 DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,openai.org
 DOMAIN-SUFFIX,openaiassets.blob.core.windows.net
 DOMAIN-SUFFIX,openaicom.imgix.net
 DOMAIN-SUFFIX,openart.ai
@@ -923,6 +925,7 @@ DOMAIN-SUFFIX,ttwstatic.com
 DOMAIN-SUFFIX,turn.livekit.cloud
 DOMAIN-SUFFIX,txcloud.net
 DOMAIN-SUFFIX,txvia.com
+DOMAIN-SUFFIX,typesafe.ai
 DOMAIN-SUFFIX,unfiltered.news
 DOMAIN-SUFFIX,urchin.com
 DOMAIN-SUFFIX,useplannr.com
