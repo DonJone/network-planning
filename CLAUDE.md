@@ -15,7 +15,7 @@
 
 ## 目录结构
 ```text
-proxy-rulesets/
+network-planning/
 ├── .github/workflows/build-rulesets.yml   # 自动编译与发版流水线
 ├── custom/                                # 本地自定义规则 (解构自 mihomo_Region.yaml)
 │   ├── direct_custom.txt
