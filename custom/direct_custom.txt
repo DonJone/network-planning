@@ -1,5 +1,8 @@
 # 自定义直连规则 (解构自 mihomo_Region.yaml 及各平台专属配置)
 DOMAIN-SUFFIX,campus.edu.cn
+DOMAIN-SUFFIX,xisu.edu.cn
+IP-CIDR,218.195.0.0/16,no-resolve
+IP-CIDR,59.74.0.0/16,no-resolve
 DOMAIN-KEYWORD,libvio
 DOMAIN,train.suuwu.de
 DOMAIN,mlc.once.im
