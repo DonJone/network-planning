@@ -4724,7 +4724,6 @@ DOMAIN-SUFFIX,bsw.co.jp
 DOMAIN-SUFFIX,bsw.jp
 DOMAIN-SUFFIX,bsxm1213.pro
 DOMAIN-SUFFIX,bt
-DOMAIN-SUFFIX,bt-tracker.de
 DOMAIN-SUFFIX,bt1.archive.org
 DOMAIN-SUFFIX,bt2.archive.org
 DOMAIN-SUFFIX,bt4g.org
@@ -6293,6 +6292,7 @@ DOMAIN-SUFFIX,cybertrust.co.jp
 DOMAIN-SUFFIX,cybertrust.ne.jp
 DOMAIN-SUFFIX,cyberx.com
 DOMAIN-SUFFIX,cygames.co.jp
+DOMAIN-SUFFIX,cygames.com
 DOMAIN-SUFFIX,cygames.jp
 DOMAIN-SUFFIX,cygwin.com
 DOMAIN-SUFFIX,cylink.pro
@@ -6543,6 +6543,7 @@ DOMAIN-SUFFIX,dealtree.org
 DOMAIN-SUFFIX,deasians.com
 DOMAIN-SUFFIX,debank.com
 DOMAIN-SUFFIX,debian.org
+DOMAIN-SUFFIX,debot.ai
 DOMAIN-SUFFIX,decentr.net
 DOMAIN-SUFFIX,dechamora.com
 DOMAIN-SUFFIX,deck.ly
@@ -11692,7 +11693,6 @@ DOMAIN-SUFFIX,hsxsp1.buzz
 DOMAIN-SUFFIX,hsyy.vip
 DOMAIN-SUFFIX,ht
 DOMAIN-SUFFIX,ht.ly
-DOMAIN-SUFFIX,ht.therarbg.to
 DOMAIN-SUFFIX,htanime.epizy.com
 DOMAIN-SUFFIX,htkou.net
 DOMAIN-SUFFIX,htl.li
@@ -16010,6 +16010,7 @@ DOMAIN-SUFFIX,music.apple.com
 DOMAIN-SUFFIX,musicbay.net
 DOMAIN-SUFFIX,musicbrainz.org
 DOMAIN-SUFFIX,musickit.net
+DOMAIN-SUFFIX,musicstatus.itunes.apple.com
 DOMAIN-SUFFIX,musixmatch.com
 DOMAIN-SUFFIX,mut.ch
 DOMAIN-SUFFIX,muthead.com
@@ -16241,6 +16242,7 @@ DOMAIN-SUFFIX,mz
 DOMAIN-SUFFIX,mzed.com
 DOMAIN-SUFFIX,mzl.la
 DOMAIN-SUFFIX,mzstatic.com
+DOMAIN-SUFFIX,mzstorekit.itunes.apple.com
 DOMAIN-SUFFIX,n26.com
 DOMAIN-SUFFIX,n3ro.lol
 DOMAIN-SUFFIX,n3ro.net
@@ -19632,6 +19634,7 @@ DOMAIN-SUFFIX,relateiq.com
 DOMAIN-SUFFIX,reliance
 DOMAIN-SUFFIX,religionnews.com
 DOMAIN-SUFFIX,remirepo.net
+DOMAIN-SUFFIX,remna.dev
 DOMAIN-SUFFIX,remna.st
 DOMAIN-SUFFIX,rencapbank.ru
 DOMAIN-SUFFIX,renchead.com
@@ -21511,6 +21514,7 @@ DOMAIN-SUFFIX,stackpath.dev
 DOMAIN-SUFFIX,stacksnippets.net
 DOMAIN-SUFFIX,stacyvandenbergboobs.com
 DOMAIN-SUFFIX,stada
+DOMAIN-SUFFIX,stairs.lat
 DOMAIN-SUFFIX,standard.co.uk
 DOMAIN-SUFFIX,standardchartered.com
 DOMAIN-SUFFIX,standardsuniversity.org
@@ -22009,6 +22013,8 @@ DOMAIN-SUFFIX,t.213891.xyz
 DOMAIN-SUFFIX,t.finance
 DOMAIN-SUFFIX,t.overflow.biz
 DOMAIN-SUFFIX,t.ssp.hinet.net
+DOMAIN-SUFFIX,t1.itrus.su
+DOMAIN-SUFFIX,t2.itrus.su
 DOMAIN-SUFFIX,t2.ru
 DOMAIN-SUFFIX,t21.nikkei.co.jp
 DOMAIN-SUFFIX,t21ipau.nikkei.co.jp
@@ -22853,12 +22859,10 @@ DOMAIN-SUFFIX,tpi.org.tw
 DOMAIN-SUFFIX,tpornstars.com
 DOMAIN-SUFFIX,tr
 DOMAIN-SUFFIX,tr.abiir.top
-DOMAIN-SUFFIX,tr.abir.ga
 DOMAIN-SUFFIX,tr.burnabyhighstar.com
 DOMAIN-SUFFIX,tr.com
 DOMAIN-SUFFIX,tr.highstar.shop
 DOMAIN-SUFFIX,tr.nyacat.pw
-DOMAIN-SUFFIX,tr3.ysagin.top
 DOMAIN-SUFFIX,tr4ck3r.duckdns.org
 DOMAIN-SUFFIX,tracfone.com
 DOMAIN-SUFFIX,tracker-udp.gbitt.info
@@ -22866,12 +22870,12 @@ DOMAIN-SUFFIX,tracker.004430.xyz
 DOMAIN-SUFFIX,tracker.23794.top
 DOMAIN-SUFFIX,tracker.7471.top
 DOMAIN-SUFFIX,tracker.alt.cx
-DOMAIN-SUFFIX,tracker.aruku.ovh
 DOMAIN-SUFFIX,tracker.augrains.com
 DOMAIN-SUFFIX,tracker.bittor.pw
 DOMAIN-SUFFIX,tracker.bluefrog.pw
 DOMAIN-SUFFIX,tracker.cn.nyaa.net
 DOMAIN-SUFFIX,tracker.corpscorp.online
+DOMAIN-SUFFIX,tracker.cyberia.is
 DOMAIN-SUFFIX,tracker.dhitechnical.com
 DOMAIN-SUFFIX,tracker.dler.com
 DOMAIN-SUFFIX,tracker.dler.org
@@ -22879,11 +22883,11 @@ DOMAIN-SUFFIX,tracker.ducks.party
 DOMAIN-SUFFIX,tracker.evergarden.uk
 DOMAIN-SUFFIX,tracker.farted.net
 DOMAIN-SUFFIX,tracker.filemail.com
-DOMAIN-SUFFIX,tracker.flatuslifir.is
 DOMAIN-SUFFIX,tracker.foreverpirates.co
 DOMAIN-SUFFIX,tracker.gg
 DOMAIN-SUFFIX,tracker.gmi.gd
 DOMAIN-SUFFIX,tracker.ilibr.org
+DOMAIN-SUFFIX,tracker.internetwarriors.net
 DOMAIN-SUFFIX,tracker.k.vu
 DOMAIN-SUFFIX,tracker.kuroy.me
 DOMAIN-SUFFIX,tracker.mywaifu.best
@@ -22897,18 +22901,16 @@ DOMAIN-SUFFIX,tracker.opentrackr.org
 DOMAIN-SUFFIX,tracker.openwebtorrent.com
 DOMAIN-SUFFIX,tracker.peerfect.org
 DOMAIN-SUFFIX,tracker.playground.ru
-DOMAIN-SUFFIX,tracker.pmman.tech
 DOMAIN-SUFFIX,tracker.qingwapt.org
 DOMAIN-SUFFIX,tracker.qu.ax
 DOMAIN-SUFFIX,tracker.renfei.net
-DOMAIN-SUFFIX,tracker.run.place
-DOMAIN-SUFFIX,tracker.sela.st
+DOMAIN-SUFFIX,tracker.skynetcloud.site
 DOMAIN-SUFFIX,tracker.skyts.net
 DOMAIN-SUFFIX,tracker.theoks.net
 DOMAIN-SUFFIX,tracker.torrent.eu.org
 DOMAIN-SUFFIX,tracker.torrents.observer
 DOMAIN-SUFFIX,tracker.transfur.org
-DOMAIN-SUFFIX,tracker.tryhackx.org
+DOMAIN-SUFFIX,tracker.vectahosting.eu
 DOMAIN-SUFFIX,tracker.waaa.moe
 DOMAIN-SUFFIX,tracker.wildkat.net
 DOMAIN-SUFFIX,tracker.willy.pro
@@ -26279,7 +26281,6 @@ DOMAIN-SUFFIX,yandexdataschool.ru
 DOMAIN-SUFFIX,yandexgo.com
 DOMAIN-SUFFIX,yandexlyceum.ru
 DOMAIN-SUFFIX,yandexwebcache.net
-DOMAIN-SUFFIX,yandexwebcache.org
 DOMAIN-SUFFIX,yango-b2b.com
 DOMAIN-SUFFIX,yango-team.com
 DOMAIN-SUFFIX,yango-tech.com
@@ -26314,6 +26315,7 @@ DOMAIN-SUFFIX,yavtube.com
 DOMAIN-SUFFIX,yaya.cyou
 DOMAIN-SUFFIX,yayadizhi.xyz
 DOMAIN-SUFFIX,yazhouse8.com
+DOMAIN-SUFFIX,yb-payment.ru
 DOMAIN-SUFFIX,yb.uncn.jp
 DOMAIN-SUFFIX,yccdn.ru
 DOMAIN-SUFFIX,yclients.com
