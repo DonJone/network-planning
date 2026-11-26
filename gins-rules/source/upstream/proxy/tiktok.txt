@@ -3,6 +3,9 @@ bytegecko-i18n.com
 byteintlapi.com
 byteoversea.com
 capcut.com
+capcutapi.com
+capcutapi.us
+capcutstatic.com
 full:lf16-effectcdn.byteeffecttos-g.com
 full:lf16-pkgcdn.pitaya-clientai.com
 full:p16-tiktokcdn-com.akamaized.net
