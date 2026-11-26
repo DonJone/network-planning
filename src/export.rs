@@ -5,6 +5,7 @@ use std::io::{BufWriter, Write};
 use std::path::Path;
 
 use serde::Serialize;
+use serde_json::{Map, Value, json};
 
 use crate::Result;
 
@@ -13,11 +14,18 @@ pub struct Bucket {
     pub domains: Vec<String>,
     pub keywords: Vec<String>,
     pub ips: Vec<String>,
+    /// 需在二进制规则中剔除的后缀/完整域名 (被本分类父级后缀覆盖、但应归属其他分类)，仅 sing-box 支持
+    pub exclude_suffixes: Vec<String>,
+    pub exclude_domains: Vec<String>,
 }
 
 impl Bucket {
     fn is_empty(&self) -> bool {
         self.suffixes.is_empty() && self.domains.is_empty() && self.keywords.is_empty() && self.ips.is_empty()
+    }
+
+    fn has_exclusions(&self) -> bool {
+        !self.exclude_suffixes.is_empty() || !self.exclude_domains.is_empty()
     }
 }
 
@@ -108,7 +116,35 @@ struct SingboxRuleSet<'a> {
 }
 
 /// Sing-box JSON 规则源 (SRS 前置源格式)
+/// 存在剔除项时，域名部分编译为 `命中域名 AND NOT 剔除域名` 的逻辑规则，IP 单独成规则
 fn write_singbox(dir: &Path, category: &str, bucket: &Bucket) -> Result<()> {
+    let mut file = create(dir, &format!("{category}.json"))?;
+    if bucket.has_exclusions() {
+        let domains = SingboxRule {
+            domain: &bucket.domains,
+            domain_suffix: &bucket.suffixes,
+            domain_keyword: &bucket.keywords,
+            ip_cidr: &[],
+        };
+        let mut exclude = Map::new();
+        if !bucket.exclude_domains.is_empty() {
+            exclude.insert("domain".into(), json!(bucket.exclude_domains));
+        }
+        if !bucket.exclude_suffixes.is_empty() {
+            exclude.insert("domain_suffix".into(), json!(bucket.exclude_suffixes));
+        }
+        exclude.insert("invert".into(), Value::Bool(true));
+
+        let mut rules =
+            vec![json!({"type": "logical", "mode": "and", "rules": [serde_json::to_value(&domains)?, exclude]})];
+        if !bucket.ips.is_empty() {
+            rules.push(json!({"ip_cidr": bucket.ips}));
+        }
+        serde_json::to_writer_pretty(&mut file, &json!({"version": 2, "rules": rules}))?;
+        file.flush()?;
+        return Ok(());
+    }
+
     let mut rules = Vec::new();
     if !bucket.is_empty() {
         rules.push(SingboxRule {
@@ -118,7 +154,6 @@ fn write_singbox(dir: &Path, category: &str, bucket: &Bucket) -> Result<()> {
             ip_cidr: &bucket.ips,
         });
     }
-    let mut file = create(dir, &format!("{category}.json"))?;
     serde_json::to_writer_pretty(&mut file, &SingboxRuleSet { version: 2, rules })?;
     file.flush()?;
     Ok(())

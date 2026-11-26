@@ -118,7 +118,35 @@ fn deduplicate(rules: &[Rule]) -> Bucket {
     domains.retain(|domain| !domain_suffixes(domain).skip(1).any(|parent| suffixes.contains(parent)));
 
     let owned = |set: BTreeSet<&str>| set.into_iter().map(str::to_owned).collect();
-    Bucket { suffixes: owned(suffixes), domains: owned(domains), keywords: owned(keywords), ips: owned(ips) }
+    Bucket {
+        suffixes: owned(suffixes),
+        domains: owned(domains),
+        keywords: owned(keywords),
+        ips: owned(ips),
+        exclude_suffixes: Vec::new(),
+        exclude_domains: Vec::new(),
+    }
+}
+
+/// 找出被本分类父级后缀/关键字覆盖、但自定义规则要求归属其他分类的域名，供二进制规则剔除
+/// 例：ai 含 `google.com` 后缀，lowrate_custom 的 `photos.google.com` 需从 ai 中剔除才能落到 lowrate
+fn set_exclusions(bucket: &mut Bucket, preferred: &[Rule]) {
+    let suffixes: HashSet<&str> = bucket.suffixes.iter().map(String::as_str).collect();
+    let covered = |domain: &str| {
+        domain_suffixes(domain).any(|parent| suffixes.contains(parent))
+            || bucket.keywords.iter().any(|keyword| domain.contains(keyword.as_str()))
+    };
+    let mut exclude_suffixes = BTreeSet::new();
+    let mut exclude_domains = BTreeSet::new();
+    for (kind, value) in preferred {
+        match kind {
+            Kind::DomainSuffix if covered(value) => exclude_suffixes.insert(value.clone()),
+            Kind::Domain if covered(value) => exclude_domains.insert(value.clone()),
+            _ => false,
+        };
+    }
+    bucket.exclude_suffixes = exclude_suffixes.into_iter().collect();
+    bucket.exclude_domains = exclude_domains.into_iter().collect();
 }
 
 pub fn run(root: &Path) -> Result<ExitCode> {
@@ -178,6 +206,7 @@ pub fn run(root: &Path) -> Result<ExitCode> {
     let apac_custom = custom_domains("custom/apac_custom.txt")?;
     let direct_custom = custom_domains("custom/direct_custom.txt")?;
     let lowrate_custom = custom_domains("custom/lowrate_custom.txt")?;
+    let lowrate_custom_rules = load_local_file(root, "custom/lowrate_custom.txt")?;
 
     // 4. override_direct 中的域名（如 AWS 国际站与中国区）强制归属对应分类，严禁被 direct 国内大盘吞掉
     let mut override_domains: HashMap<&str, &'static str> = HashMap::new();
@@ -266,7 +295,11 @@ pub fn run(root: &Path) -> Result<ExitCode> {
             }
         }
 
-        let bucket = deduplicate(&filtered);
+        let mut bucket = deduplicate(&filtered);
+        if key == "ai" {
+            // lowrate_custom 中被 ai 父级后缀 (google.com / googleapis.com 等) 覆盖的域名，在二进制规则中剔除
+            set_exclusions(&mut bucket, &lowrate_custom_rules);
+        }
         println!(
             "  [{key:<7}] 域名后缀: {:>6} | 完整域名: {:>5} | 关键字: {:>3} | IP: {:>5}",
             bucket.suffixes.len(),
@@ -274,6 +307,12 @@ pub fn run(root: &Path) -> Result<ExitCode> {
             bucket.keywords.len(),
             bucket.ips.len()
         );
+        if !bucket.exclude_suffixes.is_empty() || !bucket.exclude_domains.is_empty() {
+            println!(
+                "  [{key:<7}] sing-box 二进制剔除: {}",
+                bucket.exclude_suffixes.iter().chain(&bucket.exclude_domains).cloned().collect::<Vec<_>>().join(", ")
+            );
+        }
 
         // 导出 4 大生态
         export::write_all(root, key, &bucket)?;
@@ -312,5 +351,22 @@ mod tests {
         assert!(is_gins_force_proxy("api.ipinfo.io"));
         assert!(is_gins_force_proxy("v16.tiktokcdn-us.com"));
         assert!(!is_gins_force_proxy("myipinfo.io"));
+    }
+
+    #[test]
+    fn excludes_preferred_domains_covered_by_parent_suffix() {
+        let mut bucket = deduplicate(&[
+            (Kind::DomainSuffix, "google.com".to_string()),
+            (Kind::DomainSuffix, "googleapis.com".to_string()),
+        ]);
+        let preferred = vec![
+            (Kind::DomainSuffix, "photos.google.com".to_string()),
+            (Kind::Domain, "youtubei.googleapis.com".to_string()),
+            (Kind::DomainSuffix, "netflix.com".to_string()),
+            (Kind::Keyword, "youtube".to_string()),
+        ];
+        set_exclusions(&mut bucket, &preferred);
+        assert_eq!(bucket.exclude_suffixes, vec!["photos.google.com"]);
+        assert_eq!(bucket.exclude_domains, vec!["youtubei.googleapis.com"]);
     }
 }

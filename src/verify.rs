@@ -50,13 +50,23 @@ fn categories() -> impl Iterator<Item = &'static str> {
     SOURCES.iter().map(|category| category.key)
 }
 
-fn first_rule(path: &Path) -> Result<Value> {
+fn load_rules(path: &Path) -> Result<Value> {
     let data: Value = serde_json::from_str(&fs::read_to_string(path)?)?;
-    Ok(data.get("rules").and_then(|rules| rules.get(0)).cloned().unwrap_or(Value::Null))
+    Ok(data.get("rules").cloned().unwrap_or(Value::Null))
 }
 
-fn field_len(rule: &Value, key: &str) -> usize {
-    rule.get(key).and_then(Value::as_array).map_or(0, Vec::len)
+/// 统计规则 (含嵌套逻辑规则) 中某字段的条目数，跳过 invert 剔除规则
+fn field_len(rules: &Value, key: &str) -> usize {
+    rules.as_array().map_or(0, |rules| {
+        rules
+            .iter()
+            .filter(|rule| rule.get("invert").and_then(Value::as_bool) != Some(true))
+            .map(|rule| {
+                rule.get(key).and_then(Value::as_array).map_or(0, Vec::len)
+                    + rule.get("rules").map_or(0, |nested| field_len(nested, key))
+            })
+            .sum()
+    })
 }
 
 fn verify_singbox(root: &Path, singbox: &Path) -> Result<()> {
@@ -75,8 +85,8 @@ fn verify_singbox(root: &Path, singbox: &Path) -> Result<()> {
             continue;
         }
 
-        let source_rule = first_rule(&source)?;
-        let decompiled_rule = first_rule(&decompiled)?;
+        let source_rule = load_rules(&source)?;
+        let decompiled_rule = load_rules(&decompiled)?;
         let (src_suffix, dec_suffix) = (field_len(&source_rule, "domain_suffix"), field_len(&decompiled_rule, "domain_suffix"));
         let (src_ip, dec_ip) = (field_len(&source_rule, "ip_cidr"), field_len(&decompiled_rule, "ip_cidr"));
         if src_suffix == dec_suffix && src_ip == dec_ip {

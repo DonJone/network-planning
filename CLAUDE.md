@@ -49,6 +49,8 @@ network-planning/
 
 例外：`src/config.rs` 中 `override_direct` 来源与 `OVERRIDE_DIRECT_PATTERNS` 正则命中的域名（AWS 国际站与中国区、AWS Quick）强制归入 `ai`，不受 direct/apac 优先级吞并。
 
+父域剔除：`custom/lowrate_custom.txt` 中被 `ai` 父级后缀覆盖的域名（如 `photos.google.com` 被 `google.com` 覆盖），在 Sing-box `ai.srs` 中以 `AND NOT` 逻辑规则剔除，使客户端按 direct → apac → ai → lowrate 顺序匹配时仍落入 `lowrate`。Mihomo `.mrs` 与 Loon/Shadowrocket 列表格式不支持剔除，这些平台上此类域名仍命中 `ai`。
+
 ## 构建与运行
 ```bash
 # 可选：同步 Gins-Rules 上游源
