@@ -1,0 +1,33 @@
+# github
+# Auto-merged and deduplicated by Gins-Rules
+
+atom.io
+copilot-proxy.githubusercontent.com
+dependabot.com
+ghcr.io
+git.io
+github-cloud.s3.amazonaws.com
+github.blog
+github.com
+github.community
+github.dev
+github.io
+githubapp.com
+githubassets.com
+githubcopilot.com
+githubhackathon.com
+githubnext.com
+githubpreview.dev
+githubstatus.com
+githubuniverse.com
+githubusercontent.com
+keyword:github
+myoctocat.com
+npm.community
+npmjs.com
+npmjs.org
+opensource.guide
+rawgit.com
+rawgithub.com
+repo.new
+thegithubshop.com

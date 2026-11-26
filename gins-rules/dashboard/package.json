@@ -1,0 +1,31 @@
+{
+  "name": "gins-rules-board",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/preact": "latest",
+    "@preact/signals": "latest",
+    "astro": "latest",
+    "preact": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@iconify-json/lucide": "latest",
+    "@iconify-json/ph": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@unocss/astro": "latest",
+    "@unocss/reset": "latest",
+    "@unocss/transformer-directives": "latest",
+    "@unocss/transformer-variant-group": "latest",
+    "typescript": "latest",
+    "unocss": "latest"
+  }
+}

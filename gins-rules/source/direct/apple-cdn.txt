@@ -1,0 +1,21 @@
+# ==============================
+# Apple Direct Rules (Apple software/app/media downloads only)
+# Auto-merged and deduplicated by Gins-Rules
+# ==============================
+
+appldnld.apple.com
+appldnld.apple.com.edgesuite.net
+audiocontentdownload.apple.com
+devimages-cdn.apple.com
+download.developer.apple.com
+oscdn.apple.com
+osrecovery.apple.com
+pkg.apple.com
+playgrounds-assets-cdn.apple.com
+playgrounds-cdn.apple.com
+swcdn.apple.com
+swdist.apple.com
+swdownload.apple.com
+sylvan.apple.com
+updates-http.cdn-apple.com
+updates.cdn-apple.com

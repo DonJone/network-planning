@@ -1,0 +1,282 @@
+[
+  {
+    "name": "L Proxy",
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt",
+    "category": "proxy",
+    "target": "proxy-list",
+    "enabled": true
+  },
+  {
+    "name": "M Proxy",
+    "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geosite/proxy.list",
+    "category": "proxy",
+    "target": "proxy-list",
+    "enabled": true
+  },
+  {
+    "name": "L Direct",
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "M China",
+    "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geosite/cn.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "L Reject",
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt",
+    "category": "reject",
+    "target": "reject-list",
+    "enabled": true
+  },
+  {
+    "name": "M Ads",
+    "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.list",
+    "category": "reject",
+    "target": "reject-list",
+    "enabled": true
+  },
+  {
+    "name": "Yuu Ads All",
+    "url": "https://raw.githubusercontent.com/Yuu518/sing-box-rules/rule_set/rule_set_site/category-ads-all.json",
+    "category": "reject",
+    "target": "reject-list",
+    "enabled": true
+  },
+  {
+    "name": "Yuu PCDN CN",
+    "url": "https://raw.githubusercontent.com/Yuu518/sing-box-rules/rule_set/rule_set_site/pcdn-cn.json",
+    "category": "reject",
+    "target": "reject-list",
+    "enabled": true
+  },
+  {
+    "name": "L GFW",
+    "url": "https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt",
+    "category": "proxy",
+    "target": "gfw-list",
+    "enabled": true
+  },
+  {
+    "name": "M GFW",
+    "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.list",
+    "category": "proxy",
+    "target": "gfw-list",
+    "enabled": true
+  },
+  {
+    "name": "YouTube (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/YouTube/YouTube.list",
+    "category": "proxy",
+    "target": "youtube",
+    "enabled": true
+  },
+  {
+    "name": "Netflix (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Netflix/Netflix.list",
+    "category": "proxy",
+    "target": "netflix",
+    "enabled": true
+  },
+  {
+    "name": "Disney+ (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Disney/Disney.list",
+    "category": "proxy",
+    "target": "disney",
+    "enabled": true
+  },
+  {
+    "name": "Discord (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Discord/Discord.list",
+    "category": "proxy",
+    "target": "discord",
+    "enabled": true
+  },
+  {
+    "name": "Telegram (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Telegram/Telegram.list",
+    "category": "proxy",
+    "target": "telegram",
+    "enabled": true
+  },
+  {
+    "name": "TikTok (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/TikTok/TikTok.list",
+    "category": "proxy",
+    "target": "tiktok",
+    "enabled": true
+  },
+  {
+    "name": "ByteDance (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/ByteDance/ByteDance.list",
+    "category": "direct",
+    "target": "bytedance",
+    "enabled": true
+  },
+  {
+    "name": "CN Additional",
+    "url": "https://static-file-global.353355.xyz/rules/cn-additional-list.txt",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Claude (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Claude/Claude.list",
+    "category": "proxy",
+    "target": "ai-other",
+    "enabled": true
+  },
+  {
+    "name": "Gemini (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Gemini/Gemini.list",
+    "category": "proxy",
+    "target": "ai-other",
+    "enabled": true
+  },
+  {
+    "name": "Copilot (BM7)",
+    "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Copilot/Copilot.list",
+    "category": "proxy",
+    "target": "ai-other",
+    "enabled": true
+  },
+  {
+    "name": "Telegram Official CIDR",
+    "url": "https://core.telegram.org/resources/cidr.txt",
+    "category": "ip",
+    "target": "asn-telegram",
+    "enabled": true
+  },
+  {
+    "name": "Nice-AI",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/AI.list",
+    "category": "proxy",
+    "target": "ai-other",
+    "enabled": true
+  },
+  {
+    "name": "Nice-OpenAI",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/OpenAI.list",
+    "category": "proxy",
+    "target": "ai-other",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Apple",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/AppleAll.list",
+    "category": "proxy",
+    "target": "apple",
+    "enabled": true
+  },
+  {
+    "name": "Nice-YouTube",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/YouTube.list",
+    "category": "proxy",
+    "target": "youtube",
+    "enabled": true
+  },
+  {
+    "name": "Nice-TikTok",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/TikTok.list",
+    "category": "proxy",
+    "target": "tiktok",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Twitter",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/Twitter.list",
+    "category": "proxy",
+    "target": "twitter",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Facebook",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/Facebook.list",
+    "category": "proxy",
+    "target": "facebook",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Binance",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/Binance.list",
+    "category": "proxy",
+    "target": "binance",
+    "enabled": true
+  },
+  {
+    "name": "Nice-OKX",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/OKX.list",
+    "category": "proxy",
+    "target": "okx",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Ads",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/rejectAd.list",
+    "category": "reject",
+    "target": "reject-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Direct",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/GeoIP_CN.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Douyin",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/Douyin.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-KuaiShou",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/KuaiShou.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-RedBook",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/RedBook.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Soul",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/Soul.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-TencentVideo",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/TencentVideo.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-LAN",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/LAN.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  },
+  {
+    "name": "Nice-Apple-Update",
+    "url": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/apple_update.list",
+    "category": "direct",
+    "target": "direct-list",
+    "enabled": true
+  }
+]
