@@ -6,6 +6,14 @@
 2. apac     (走亚太: 通讯 Telegram, X)
 3. ai       (走 AI: AI与Google + TikTok + AWS/AWS Quick)
 4. lowrate  (走低倍: Emby流媒体Github + 兜底)
+
+每个分类的来源字段:
+- custom: 本地自定义规则文件
+- remote: 远程上游规则 URL
+- gins:   内置 Gins-Rules 源 (gins-rules/source)，格式为 "{分类}/{规则名}"，
+          读取 source/{分类}/{规则名}.txt 与 source/upstream/{分类}/{规则名}.txt 并合并，
+          asn 分类对应 source/ip 目录；同时合并 gins-rules/cdn/ 下的 CDN 每日快照
+          (由 scripts/sync_gins_cdn.py 从 rules.ichimarugin728.dev 拉取)
 """
 
 SOURCES = {
@@ -26,10 +34,8 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games@cn.list",
-            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/direct/direct-list.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/steam.list",
         ],
+        "gins": ["direct/direct-list", "proxy/steam"],
     },
     "apac": {
         "name": "走亚太",
@@ -41,11 +47,8 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/x.list",
             # echs-top
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/ip/telegram.list",
-            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/telegram.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/twitter.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/ip/telegram.list",
         ],
+        "gins": ["proxy/telegram", "proxy/twitter", "ip/telegram"],
     },
     "ai": {
         "name": "走 AI",
@@ -62,10 +65,8 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/aws.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/aws@cn.list",
-            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/ai-other.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/ip/asn-google.list",
         ],
+        "gins": ["proxy/ai-other", "asn/asn-google"],
         # 以下来源的域名优先级高于 direct：AWS 国际站与中国区均强制走 AI，不允许被国内直连大盘吞掉
         "override_direct": [
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/aws.list",
@@ -89,15 +90,16 @@ SOURCES = {
             # echs-top
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy.list",
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy-ltsc.list",
-            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/github.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/netflix.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/disney.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/hbo.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/spotify.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/appletv.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/proxy-list.list",
-            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/gfw-list.list",
+        ],
+        "gins": [
+            "proxy/github",
+            "proxy/netflix",
+            "proxy/disney",
+            "proxy/hbo",
+            "proxy/spotify",
+            "proxy/appletv",
+            "proxy/proxy-list",
+            "proxy/gfw-list",
         ],
     },
 }
@@ -109,3 +111,6 @@ OVERRIDE_DIRECT_PATTERNS = [
     (r"(^|\.)amzndns-cn\.[a-z.]+$", "ai"),
     (r"(^|\.)cloudfront-cn\.net$", "ai"),
 ]
+
+# Gins-Rules CDN 根路径 (Shadowrocket 格式)，由 scripts/sync_gins_cdn.py 每日拉取快照
+GINS_CDN_BASE = "https://rules.ichimarugin728.dev/ruleset/shadowrocket"

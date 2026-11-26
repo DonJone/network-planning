@@ -17,6 +17,19 @@ from parser import RuleParser
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RULES_DIR = os.path.join(BASE_DIR, "rules")
+GINS_SOURCE_DIR = os.path.join(BASE_DIR, "gins-rules", "source")
+GINS_CDN_DIR = os.path.join(BASE_DIR, "gins-rules", "cdn", "shadowrocket")
+
+# 与 gins-rules/cmd/compile 的 sanitizeRules 保持一致：非 proxy 分类剔除以下强制代理域名
+GINS_FORCE_PROXY = (
+    "browserleaks.com", "browserleaks.org",
+    "ipleak.net", "ipleak.vip",
+    "ipinfo.io", "ip.sb",
+    "whoer.net", "dnsleaktest.com",
+    "tiktok.com", "tiktokv.com", "tiktokcdn.com",
+    "byteoversea.com", "ibytedtos.com", "ipstatp.com",
+    "muscdn.com", "musical.ly", "tik-tokapi.com",
+)
 
 def fetch_url(url: str, retries: int = 3, timeout: int = 25) -> list:
     """拉取远程规则并返回解析后的规则列表，支持重试"""
@@ -52,6 +65,60 @@ def load_local_file(filepath: str) -> list:
             rule = RuleParser.parse_line(line)
             if rule:
                 parsed.append(rule)
+    return parsed
+
+def is_gins_force_proxy(domain: str) -> bool:
+    if "tiktok" in domain or "tik-tok" in domain:
+        return True
+    return any(domain == p or domain.endswith("." + p) for p in GINS_FORCE_PROXY)
+
+def parse_gins_line(line: str):
+    """按 gins-rules/cmd/compile 的 parseSource 语义解析 Gins 源文本行"""
+    line = line.strip()
+    if not line or line.startswith("#"):
+        return None
+    if line.startswith("full:"):
+        return RuleParser.parse_line(f"DOMAIN,{line[5:]}")
+    if line.startswith("keyword:"):
+        return RuleParser.parse_line(f"DOMAIN-KEYWORD,{line[8:]}")
+    if line.startswith(("regexp:", "process:", "user-agent:", "asn:")):
+        return None
+    if "/" in line:
+        return RuleParser.parse_line(f"IP-CIDR,{line}")
+    domain = line.removeprefix("+.").removeprefix(".")
+    return RuleParser.parse_line(f"DOMAIN-SUFFIX,{domain}")
+
+def load_gins_rule(ref: str) -> list:
+    """读取内置 Gins-Rules 源与 CDN 快照，ref 格式为 分类/规则名 (如 proxy/steam)"""
+    category, name = ref.split("/", 1)
+    source_category = "ip" if category == "asn" else category
+    paths = [
+        os.path.join(GINS_SOURCE_DIR, source_category, f"{name}.txt"),
+        os.path.join(GINS_SOURCE_DIR, "upstream", source_category, f"{name}.txt"),
+    ]
+    cdn_snapshot = os.path.join(GINS_CDN_DIR, source_category, f"{name}.list")
+    existing = [p for p in paths if os.path.exists(p)]
+    if not existing and not os.path.exists(cdn_snapshot):
+        print(f"  [WARN] Gins 源不存在: {ref}")
+        return []
+    parsed = []
+    for path in existing:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                rule = parse_gins_line(line)
+                if rule:
+                    parsed.append(rule)
+    if os.path.exists(cdn_snapshot):
+        with open(cdn_snapshot, "r", encoding="utf-8") as f:
+            for line in f:
+                rule = RuleParser.parse_line(line)
+                if rule:
+                    parsed.append(rule)
+    if category != "proxy":
+        parsed = [
+            (rtype, val) for rtype, val in parsed
+            if not (rtype in ("DOMAIN-SUFFIX", "DOMAIN") and is_gins_force_proxy(val))
+        ]
     return parsed
 
 def deduplicate_rules(rules: list):
@@ -200,6 +267,12 @@ def main():
                     res = future.result()
                     cat_rules.extend(res)
                     print(f"  -> 远程源: {url.split('/')[-1]} ({len(res)} 条)")
+
+        # 3. 加载内置 Gins-Rules 源
+        for ref in cat_data.get("gins", []):
+            gins_rules = load_gins_rule(ref)
+            cat_rules.extend(gins_rules)
+            print(f"  -> Gins 源: {ref} ({len(gins_rules)} 条)")
 
         categories_rules[cat_key] = cat_rules
 

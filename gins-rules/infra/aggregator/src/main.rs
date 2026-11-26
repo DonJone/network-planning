@@ -841,12 +841,14 @@ fn discover_asn_targets(root: &Path) -> Result<BTreeMap<String, BTreeSet<u32>>> 
 }
 
 fn find_root() -> PathBuf {
-    let mut curr = std::env::current_dir().unwrap();
-    while curr.parent().is_some() {
-        if curr.join(".git").exists() {
+    let start = std::env::current_dir().unwrap();
+    let mut curr = start.clone();
+    loop {
+        if curr.join("go.mod").exists() && curr.join("source").is_dir() {
             return curr;
         }
-        curr = curr.parent().unwrap().to_path_buf();
+        if !curr.pop() {
+            return start;
+        }
     }
-    curr
 }

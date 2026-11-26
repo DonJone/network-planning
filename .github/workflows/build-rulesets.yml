@@ -25,6 +25,25 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Sync Gins-Rules Upstream Sources
+        working-directory: gins-rules
+        run: |
+          cargo run --manifest-path infra/aggregator/Cargo.toml --release -- sync
+          cargo run --manifest-path infra/aggregator/Cargo.toml --release -- normalize
+
+      - name: Sync Gins-Rules CDN Snapshot
+        run: python3 scripts/sync_gins_cdn.py
+
+      - name: Commit Synced Gins-Rules Sources
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add gins-rules/source/ gins-rules/cdn/
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(gins-rules): auto sync upstream sources and CDN snapshot [skip ci]"
+            git push origin HEAD:main
+          fi
+
       - name: Fetch and Generate Rule Sources
         run: |
           python3 scripts/build.py
