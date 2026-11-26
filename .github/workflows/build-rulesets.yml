@@ -3,25 +3,84 @@ name: Build & Release Rulesets
 on:
   schedule:
     - cron: "0 3 * * *"  # 每天 UTC 03:00 (北京时间 11:00) 自动触发构建
-  workflow_dispatch:      # 支持手动触发
+  workflow_dispatch:      # 支持手动触发、放行降幅或按标签回滚
+    inputs:
+      allow_drop:
+        description: "允许单源或分类条数降幅超过 30% 时继续发布"
+        type: boolean
+        default: false
+      rollback_tag:
+        description: "可选：填写已有发布标签（如 rules-20261126-0300）将 release 分支回滚到该版本"
+        type: string
+        default: ""
   push:
     branches:
       - main
 
 jobs:
-  build:
+  rollback:
+    if: github.event_name == 'workflow_dispatch' && inputs.rollback_tag != ''
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Rollback Release Branch to Tag
+        env:
+          TARGET_TAG: ${{ inputs.rollback_tag }}
+        run: |
+          set -euo pipefail
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin release --tags
+          if ! git rev-parse -q --verify "refs/tags/${TARGET_TAG}" >/dev/null; then
+            echo "::error title=回滚标签不存在::未找到标签 ${TARGET_TAG}"
+            exit 1
+          fi
+
+          WORKTREE="/tmp/release-rollback"
+          rm -rf "$WORKTREE"
+          git worktree add -B release "$WORKTREE" origin/release
+          rm -rf "$WORKTREE/rules"
+          git archive "$TARGET_TAG" rules/ | tar -x -C "$WORKTREE"
+
+          cd "$WORKTREE"
+          git add -A rules/
+          if git diff --cached --quiet; then
+            echo "release 分支当前规则已与 ${TARGET_TAG} 一致，无需提交"
+          else
+            STAMP="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "Rollback rulesets to ${TARGET_TAG}: ${STAMP}"
+            git push origin release
+          fi
+
+          {
+            echo "## 规则集回滚完成"
+            echo ""
+            echo "- 目标标签: \`${TARGET_TAG}\`"
+            echo "- 分支 \`release\` 已以增量提交恢复至该版本快照。"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    if: github.event_name != 'workflow_dispatch' || inputs.rollback_tag == ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Cache Cargo
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry
@@ -53,18 +112,34 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Fetch and Generate Rule Sources
-        run: ./target/release/network-planning build
+      - name: Fetch Baseline Manifest & Generate Rule Sources
+        env:
+          ALLOW_DROP: ${{ inputs.allow_drop == true && '1' || '' }}
+        run: |
+          set -euo pipefail
+          git fetch origin release || true
+          BASELINE_ARGS=()
+          if git show origin/release:rules/manifest.json > /tmp/baseline-manifest.json 2>/dev/null; then
+            echo "[*] 已从 origin/release 加载上次构建基线"
+            BASELINE_ARGS+=(--baseline /tmp/baseline-manifest.json)
+          else
+            rm -f /tmp/baseline-manifest.json
+            echo "[*] origin/release 尚无 rules/manifest.json，首次构建将生成基线"
+          fi
+          if [ -n "$ALLOW_DROP" ]; then
+            BASELINE_ARGS+=(--allow-drop)
+          fi
+          ./target/release/network-planning build --max-drop 0.30 "${BASELINE_ARGS[@]}"
 
       - name: Install Compilers (Mihomo & Sing-box)
         run: |
           mkdir -p bin /tmp/singbox
           # 下载 Mihomo Linux x86_64
-          curl -sL https://github.com/MetaCubeX/mihomo/releases/download/v1.19.3/mihomo-linux-amd64-v1.19.3.gz | gzip -d > bin/mihomo
+          curl -fsSL https://github.com/MetaCubeX/mihomo/releases/download/v1.19.3/mihomo-linux-amd64-v1.19.3.gz | gzip -d > bin/mihomo
           chmod +x bin/mihomo
 
           # 下载 Sing-box Linux x86_64
-          curl -sL https://github.com/SagerNet/sing-box/releases/download/v1.15.0-alpha.13/sing-box-1.15.0-alpha.13-linux-amd64.tar.gz | tar -xz -C /tmp/singbox
+          curl -fsSL https://github.com/SagerNet/sing-box/releases/download/v1.15.0-alpha.13/sing-box-1.15.0-alpha.13-linux-amd64.tar.gz | tar -xz -C /tmp/singbox
           mv /tmp/singbox/*/sing-box bin/sing-box
           chmod +x bin/sing-box
           rm -rf /tmp/singbox
@@ -72,9 +147,12 @@ jobs:
       - name: Compile Binary Rules (.mrs & .srs)
         run: ./target/release/network-planning compile
 
+      - name: Verify Binary Rules (.mrs & .srs)
+        run: ./target/release/network-planning verify
+
       - name: Upload Rulesets Artifact (non-main)
         if: github.ref != 'refs/heads/main'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rulesets
           path: rules/
@@ -82,11 +160,59 @@ jobs:
       - name: Deploy to Release Branch
         if: github.ref == 'refs/heads/main'
         run: |
+          set -euo pipefail
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # 提交生成的规则集到 release 分支
-          git checkout -B release
-          git add -f rules/
-          git commit -m "Auto-build rulesets: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
-          git push -f origin release
+          git fetch origin release --tags || true
+          WORKTREE="/tmp/release-worktree"
+          rm -rf "$WORKTREE"
+
+          if git show-ref --verify --quiet refs/remotes/origin/release; then
+            git worktree add -B release "$WORKTREE" origin/release
+          else
+            git worktree add --orphan -b release "$WORKTREE"
+          fi
+
+          rm -rf "$WORKTREE/rules"
+          cp -R rules "$WORKTREE/rules"
+
+          cd "$WORKTREE"
+          git add -A rules/
+          if git diff --cached --quiet; then
+            echo "No ruleset changes to release"
+            {
+              echo "## 发布状态"
+              echo ""
+              echo "- 规则集无变更，跳过提交与打标。"
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            STAMP="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            TAG="rules-$(date -u +'%Y%m%d-%H%M')"
+            if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+              TAG="${TAG}-${GITHUB_SHA::7}"
+            fi
+
+            git commit -m "Auto-build rulesets: ${STAMP} (source: ${GITHUB_SHA::7})"
+            git tag -a "$TAG" -m "Rulesets snapshot ${STAMP} (source: ${GITHUB_SHA::7})"
+            git push origin release "refs/tags/${TAG}"
+
+            # 自动保留最近 14 个带日期快照标签，清理过期标签控制仓库体积
+            KEEP=14
+            OLD_TAGS="$(git tag -l 'rules-*' --sort=-creatordate | tail -n +$((KEEP + 1)) || true)"
+            for old in $OLD_TAGS; do
+              git tag -d "$old" || true
+              git push origin ":refs/tags/${old}" || true
+            done
+
+            {
+              echo "## 发布与回滚信息"
+              echo ""
+              echo "- 发布分支: \`release\` (保留增量提交历史，不再强推覆盖)"
+              echo "- 快照标签: \`${TAG}\` (自动保留最近 ${KEEP} 个版本)"
+              echo "- 回滚方式: 在 Actions 手动运行本工作流并填写 \`rollback_tag=${TAG}\`，或将客户端规则地址临时指向 \`@${TAG}\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          cd "$GITHUB_WORKSPACE"
+          git worktree remove --force "$WORKTREE" || true

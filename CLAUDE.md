@@ -47,9 +47,16 @@ network-planning/
 跨分类去重严格遵循：
 `direct` (直连白名单最高优先级) -> `apac` (即时通讯优先保障) -> `ai` (AI 与核心服务) -> `lowrate` (流媒体及兜底大盘)
 
-例外：`src/config.rs` 中 `override_direct` 来源与 `OVERRIDE_DIRECT_PATTERNS` 正则命中的域名（AWS 国际站与中国区、AWS Quick）强制归入 `ai`，不受 direct/apac 优先级吞并。
+例外：`src/config.rs` 中 `override_direct` 来源与 `OVERRIDE_DIRECT_PATTERNS` 正则命中的域名（AWS 国际站与中国区、AWS Quick）强制归入 `ai`，不受 direct/apac 优先级吞并；同时将公共第三方 CDN 后缀（如 `cloudfront.net`）及 GitHub/流媒体域名移出 `ai`，避免第三方大流量走 AI 节点。
 
-父域剔除：`custom/lowrate_custom.txt` 中被 `ai` 父级后缀覆盖的域名（如 `photos.google.com` 被 `google.com` 覆盖），在 Sing-box `ai.srs` 中以 `AND NOT` 逻辑规则剔除，使客户端按 direct → apac → ai → lowrate 顺序匹配时仍落入 `lowrate`。Mihomo `.mrs` 与 Loon/Shadowrocket 列表格式不支持剔除，这些平台上此类域名仍命中 `ai`。
+跨平台父域剔除与优先覆盖：被 `ai` 父级后缀或关键字覆盖、但实际归属 `lowrate` 的域名（含 `lowrate_custom` 相册/网盘/YouTube API、流媒体专用源、S3/ELB/GCS 等多租户云存储子域及关键字误杀项，严格跳过裸 AWS 区域根域及真实 AI 子域）：
+- Sing-box `ai.srs` 内置 `AND NOT` 逻辑剔除，客户端无需调整配置；
+- 同步导出极小优先规则集 `lowrate_override` (`.mrs` / `.lsr` / `.list` / `.srs`)，供 Mihomo / Loon / Shadowrocket 置于 `ai` 之前指向 `低倍`。
+
+## 构建保护、校验与发布回滚
+- **拉取回退与降幅守卫**：jsDelivr 主地址拉取失败自动回退另一节点与 `raw.githubusercontent.com`；任意远程源最终失败/解析 0 条，或相对基线 `rules/manifest.json` 出现单源/分类条数下降超 30%（可通过 `--max-drop` / `--allow-drop` 调整）时，`build` 返回非零阻断发布。
+- **CI 逆校验门禁**：`verify` 校验 Sing-box 反编译域名与合并后 CIDR 精确等价、按优先级检验 Sing-box 与 Mihomo 离线内核分流命中性，任一失败返回非零阻断发布。
+- **增量发布与标签回滚**：`release` 分支采用 worktree 增量提交保留历史，每次变更打 `rules-YYYYMMDD-HHMM` 标签（保留最近 14 个），支持在 Actions 通过 `rollback_tag` 一键回滚。
 
 ## 构建与运行
 ```bash

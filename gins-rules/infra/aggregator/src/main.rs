@@ -250,12 +250,17 @@ async fn sync_upstream_rules(root: &Path) -> Result<()> {
 
     let client = http_client()?;
     let mut merged: BTreeMap<String, BTreeMap<String, BTreeSet<String>>> = BTreeMap::new();
+    let mut failed_targets: HashSet<(String, String)> = HashSet::new();
+    let mut failed_sources: Vec<(String, String, String, String)> = Vec::new();
+    let mut total_enabled = 0usize;
+    let mut succeeded = 0usize;
 
     for source in sources {
         if !source.enabled {
             println!("  [SKIP] {}", source.name);
             continue;
         }
+        total_enabled += 1;
 
         println!(
             "  [FETCH] {} -> {}/{}",
@@ -264,25 +269,61 @@ async fn sync_upstream_rules(root: &Path) -> Result<()> {
         match fetch_text(&client, &source.url).await {
             Ok(content) => {
                 let rules = process_upstream_rules(&content);
-                let target_rules = merged
-                    .entry(source.category)
-                    .or_default()
-                    .entry(source.target)
-                    .or_default();
-                target_rules.extend(rules);
+                if rules.is_empty() {
+                    let msg = "empty rule set".to_string();
+                    println!("  [WARN] {}: {msg}", source.url);
+                    emit_gh_warning(
+                        "Gins-Rules 上游拉取异常",
+                        &format!("{} ({}/{}): {} -> {}", source.name, source.category, source.target, source.url, msg),
+                    );
+                    failed_targets.insert((source.category.clone(), source.target.clone()));
+                    failed_sources.push((
+                        source.name,
+                        format!("{}/{}", source.category, source.target),
+                        source.url,
+                        msg,
+                    ));
+                } else {
+                    succeeded += 1;
+                    let target_rules = merged
+                        .entry(source.category)
+                        .or_default()
+                        .entry(source.target)
+                        .or_default();
+                    target_rules.extend(rules);
+                }
             }
             Err(err) => {
-                println!("  [WARN] {}: {err:#}", source.url);
+                let msg = format!("{err:#}");
+                println!("  [WARN] {}: {msg}", source.url);
+                emit_gh_warning(
+                    "Gins-Rules 上游拉取失败",
+                    &format!("{} ({}/{}): {} -> {}", source.name, source.category, source.target, source.url, msg),
+                );
+                failed_targets.insert((source.category.clone(), source.target.clone()));
+                failed_sources.push((
+                    source.name,
+                    format!("{}/{}", source.category, source.target),
+                    source.url,
+                    msg,
+                ));
             }
         }
     }
 
     let upstream_root = root.join("source").join("upstream");
     for (category, targets) in merged {
-        let out_dir = upstream_root.join(category);
+        let out_dir = upstream_root.join(&category);
         fs::create_dir_all(&out_dir)?;
         for (target, rules) in targets {
             let out_path = out_dir.join(format!("{target}.txt"));
+            if failed_targets.contains(&(category.clone(), target.clone())) && out_path.exists() {
+                println!(
+                    "  [KEEP] {} (部分上游源拉取失败，保留原有文件)",
+                    out_path.strip_prefix(root)?.display()
+                );
+                continue;
+            }
             let body = if rules.is_empty() {
                 String::new()
             } else {
@@ -293,28 +334,87 @@ async fn sync_upstream_rules(root: &Path) -> Result<()> {
         }
     }
 
-    sync_resource_parsers(root, &client).await?;
+    sync_resource_parsers(root, &client, &mut failed_sources).await?;
+    write_sync_summary(total_enabled, succeeded, &failed_sources)?;
 
     println!("============================================================");
     Ok(())
 }
 
-async fn sync_resource_parsers(root: &Path, client: &reqwest::Client) -> Result<()> {
+async fn sync_resource_parsers(
+    root: &Path,
+    client: &reqwest::Client,
+    failed_sources: &mut Vec<(String, String, String, String)>,
+) -> Result<()> {
     let qx_url =
         "https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/resource-parser.js";
     let loon_url = "https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-parser.loon.min.js";
 
     println!("  [FETCH] QX Resource Parser");
-    let qx = fetch_text(client, qx_url).await?;
-    fs::write(
-        root.join("source").join("QX-Resource-Parser.js"),
-        clean_qx_parser(&qx),
-    )?;
+    match fetch_text(client, qx_url).await {
+        Ok(qx) => {
+            fs::write(
+                root.join("source").join("QX-Resource-Parser.js"),
+                clean_qx_parser(&qx),
+            )?;
+        }
+        Err(err) => {
+            let msg = format!("{err:#}");
+            println!("  [WARN] {qx_url}: {msg}");
+            emit_gh_warning("Gins-Rules 解析器拉取失败", &format!("QX Resource Parser: {msg}"));
+            failed_sources.push(("QX Resource Parser".into(), "parser".into(), qx_url.into(), msg));
+        }
+    }
 
     println!("  [FETCH] Loon Resource Parser");
-    let loon = fetch_text(client, loon_url).await?;
-    fs::write(root.join("source").join("Loon-Resource-Parser.js"), loon)?;
+    match fetch_text(client, loon_url).await {
+        Ok(loon) => {
+            fs::write(root.join("source").join("Loon-Resource-Parser.js"), loon)?;
+        }
+        Err(err) => {
+            let msg = format!("{err:#}");
+            println!("  [WARN] {loon_url}: {msg}");
+            emit_gh_warning("Gins-Rules 解析器拉取失败", &format!("Loon Resource Parser: {msg}"));
+            failed_sources.push(("Loon Resource Parser".into(), "parser".into(), loon_url.into(), msg));
+        }
+    }
 
+    Ok(())
+}
+
+fn emit_gh_warning(title: &str, message: &str) {
+    if std::env::var_os("GITHUB_ACTIONS").is_some() {
+        let esc = |s: &str| s.replace('%', "%25").replace('\r', "%0D").replace('\n', "%0A");
+        println!("::warning title={}::{}", esc(title), esc(message));
+    }
+}
+
+fn write_sync_summary(
+    total_enabled: usize,
+    succeeded: usize,
+    failed_sources: &[(String, String, String, String)],
+) -> Result<()> {
+    let Some(path) = std::env::var_os("GITHUB_STEP_SUMMARY") else {
+        return Ok(());
+    };
+    let mut summary = format!(
+        "## Gins-Rules 上游源同步\n\n- 启用源: {total_enabled} | 成功: {succeeded} | 失败: {}\n",
+        failed_sources.len()
+    );
+    if !failed_sources.is_empty() {
+        summary.push_str("\n| 源名称 | 目标 | URL | 错误 |\n|---|---|---|---|\n");
+        for (name, target, url, err) in failed_sources {
+            let safe_err = err.replace('|', "\\|").replace('\n', " ");
+            summary.push_str(&format!("| {name} | {target} | {url} | {safe_err} |\n"));
+        }
+        summary.push_str("\n> 存在拉取失败的目标已自动保留原有规则文件，未发生静默覆盖。\n");
+    }
+    summary.push('\n');
+    fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)?
+        .write_all(summary.as_bytes())?;
     Ok(())
 }
 
@@ -459,12 +559,30 @@ fn http_client() -> Result<reqwest::Client> {
 }
 
 async fn fetch_text(client: &reqwest::Client, url: &str) -> Result<String> {
-    let response = client.get(url).send().await?;
-    let status = response.status();
-    if !status.is_success() {
-        anyhow::bail!("{url}: HTTP {status}");
+    let mut last_err = None;
+    for attempt in 1..=3 {
+        match client
+            .get(url)
+            .header("Accept-Encoding", "identity")
+            .send()
+            .await
+        {
+            Ok(response) => {
+                let status = response.status();
+                if status.is_success() {
+                    return Ok(response.text().await?);
+                }
+                last_err = Some(anyhow::anyhow!("{url}: HTTP {status}"));
+            }
+            Err(err) => {
+                last_err = Some(anyhow::anyhow!("{url}: {err}"));
+            }
+        }
+        if attempt < 3 {
+            tokio::time::sleep(Duration::from_secs(2)).await;
+        }
     }
-    Ok(response.text().await?)
+    Err(last_err.unwrap_or_else(|| anyhow::anyhow!("{url}: fetch failed")))
 }
 
 async fn extract_geoip_asn(root: &Path) -> Result<()> {

@@ -4,24 +4,21 @@
 //! 拉取失败时保留原快照，不会清空文件。
 
 use std::collections::BTreeSet;
-use std::env;
-use std::fs::{self, OpenOptions};
-use std::io::Write;
+use std::fs;
 use std::path::Path;
 use std::process::ExitCode;
 use std::time::Duration;
 
 use crate::Result;
 use crate::config::{GINS_CDN_BASE, SOURCES};
-use crate::fetch::{fetch_text, parallel_map};
+use crate::fetch::{append_env_file, fetch_text, gh_warning, parallel_map};
 use crate::parser::{is_blank_or_comment, splitlines, strip};
 
 const USER_AGENT: &str = "network-planning-gins-cdn-sync";
 
-struct Stat {
-    total: usize,
-    added: usize,
-    removed: usize,
+enum SyncOutcome {
+    Updated { total: usize, added: usize, removed: usize },
+    Failed { url: String, reason: String },
 }
 
 fn cdn_path(reference: &str) -> String {
@@ -35,18 +32,20 @@ fn normalize(text: &str) -> BTreeSet<String> {
     splitlines(text).into_iter().map(strip).filter(|line| !is_blank_or_comment(line)).map(str::to_owned).collect()
 }
 
-fn sync(cdn_dir: &Path, reference: &str) -> Result<Option<Stat>> {
+fn sync(cdn_dir: &Path, reference: &str) -> Result<SyncOutcome> {
     let path = cdn_path(reference);
     let url = format!("{GINS_CDN_BASE}/{path}.list");
     let new = match fetch_text(&url, USER_AGENT, 3, Duration::from_secs(30), Duration::from_secs(2)) {
         Ok(text) => normalize(&text),
         Err(err) => {
             println!("  [WARN] 拉取失败: {url} -> {err}");
-            BTreeSet::new()
+            return Ok(SyncOutcome::Failed { url, reason: err });
         }
     };
     if new.is_empty() {
-        return Ok(None);
+        let reason = "返回内容为空".to_string();
+        println!("  [WARN] 拉取失败: {url} -> {reason}");
+        return Ok(SyncOutcome::Failed { url, reason });
     }
 
     let snapshot = cdn_dir.join(format!("{path}.list"));
@@ -62,14 +61,7 @@ fn sync(cdn_dir: &Path, reference: &str) -> Result<Option<Stat>> {
         content.push('\n');
         fs::write(&snapshot, content)?;
     }
-    Ok(Some(Stat { total: new.len(), added, removed }))
-}
-
-fn append_env_file(var: &str, content: &str) -> Result<()> {
-    if let Some(path) = env::var_os(var) {
-        OpenOptions::new().create(true).append(true).open(path)?.write_all(content.as_bytes())?;
-    }
-    Ok(())
+    Ok(SyncOutcome::Updated { total: new.len(), added, removed })
 }
 
 pub fn run(root: &Path) -> Result<ExitCode> {
@@ -89,12 +81,14 @@ pub fn run(root: &Path) -> Result<ExitCode> {
     let mut failed = 0;
     for (reference, result) in refs.iter().zip(results) {
         match result? {
-            None => {
+            SyncOutcome::Failed { url, reason } => {
                 failed += 1;
-                rows.push(format!("| {reference} | - | - | - | 拉取失败，保留原快照 |"));
+                gh_warning("Gins CDN 快照拉取失败", &format!("{reference} ({url}): {reason}，保留原快照"));
+                let safe_reason = reason.replace('|', "\\|");
+                rows.push(format!("| {reference} | - | - | - | 拉取失败，保留原快照 ({safe_reason}) |"));
                 println!("  [FAIL ] {reference:<20} 拉取失败，保留原快照");
             }
-            Some(Stat { total, added, removed }) => {
+            SyncOutcome::Updated { total, added, removed } => {
                 let diff = added > 0 || removed > 0;
                 changed |= diff;
                 let status = if diff { "有变更" } else { "无变化" };
@@ -111,11 +105,11 @@ pub fn run(root: &Path) -> Result<ExitCode> {
     append_env_file(
         "GITHUB_STEP_SUMMARY",
         &format!(
-            "## Gins-Rules CDN 快照\n\n| 规则集 | 条数 | 新增 | 删除 | 状态 |\n|---|---|---|---|---|\n{}\n",
+            "## Gins-Rules CDN 快照\n\n| 规则集 | 条数 | 新增 | 删除 | 状态 |\n|---|---|---|---|---|\n{}\n\n",
             rows.join("\n")
         ),
     )?;
-    append_env_file("GITHUB_OUTPUT", &format!("changed={changed}\n"))?;
+    append_env_file("GITHUB_OUTPUT", &format!("changed={changed}\nfailed={failed}\n"))?;
 
     Ok(if failed == refs.len() { ExitCode::FAILURE } else { ExitCode::SUCCESS })
 }

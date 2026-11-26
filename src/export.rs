@@ -9,6 +9,7 @@ use serde_json::{Map, Value, json};
 
 use crate::Result;
 
+#[derive(Clone)]
 pub struct Bucket {
     pub suffixes: Vec<String>,
     pub domains: Vec<String>,
@@ -57,21 +58,27 @@ fn write_mihomo(dir: &Path, category: &str, bucket: &Bucket) -> Result<()> {
         writeln!(file, "  - '+.{suffix}'")?;
     }
     for domain in &bucket.domains {
-        writeln!(file, "  - 'full:{domain}'")?;
+        writeln!(file, "  - '{domain}'")?;
     }
     for keyword in &bucket.keywords {
         writeln!(file, "  - 'keyword:{keyword}'")?;
     }
     file.flush()?;
 
-    let mut file = create(dir, &format!("{category}_ip.yaml"))?;
-    writeln!(file, "# Mihomo IPCIDR Ruleset")?;
-    writeln!(file, "# Category: {category}_ip")?;
-    writeln!(file, "payload:")?;
-    for ip in &bucket.ips {
-        writeln!(file, "  - '{ip}'")?;
+    let ip_yaml = dir.join(format!("{category}_ip.yaml"));
+    if bucket.ips.is_empty() {
+        let _ = fs::remove_file(&ip_yaml);
+        let _ = fs::remove_file(dir.join(format!("{category}_ip.mrs")));
+    } else {
+        let mut file = create(dir, &format!("{category}_ip.yaml"))?;
+        writeln!(file, "# Mihomo IPCIDR Ruleset")?;
+        writeln!(file, "# Category: {category}_ip")?;
+        writeln!(file, "payload:")?;
+        for ip in &bucket.ips {
+            writeln!(file, "  - '{ip}'")?;
+        }
+        file.flush()?;
     }
-    file.flush()?;
     Ok(())
 }
 

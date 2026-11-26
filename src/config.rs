@@ -121,6 +121,23 @@ pub const SOURCES: &[Category] = &[
     },
 ];
 
+/// 跨平台优先分流规则集标识：收纳被 ai 父域覆盖、但实际归属 lowrate 的域名，
+/// 供 Mihomo / Loon / Shadowrocket 置于 ai 之前指向低倍 (Sing-box 同步内置于 ai.srs 的 AND NOT 剔除)
+pub const LOWRATE_OVERRIDE_KEY: &str = "lowrate_override";
+
+/// 不应进入 ai 分类的公共 CDN 父域后缀 (例如 aws.list 中的 cloudfront.net 承载大量第三方流媒体流量)
+pub const AI_EXCLUDED_PARENT_SUFFIXES: &[&str] = &["cloudfront.net"];
+
+/// lowrate 中的广义兜底代理源：这些源覆盖全网被封/海外站点，可能混入 OpenAI/Google/TikTok 等真实 AI 子域，
+/// 仅在命中多租户云存储/CDN/托管后缀或关键字误杀时纳入 lowrate_override，避免把真实 AI 子域误踢出 ai
+pub const LOWRATE_CATCHALL_REMOTE: &[&str] = &[
+    "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.list",
+    "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy.list",
+    "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy-ltsc.list",
+];
+
+pub const LOWRATE_CATCHALL_GINS: &[&str] = &["proxy/proxy-list", "proxy/gfw-list"];
+
 /// 强制分流的正则补充 (匹配无法通过上游 list 枚举的域名)，格式: (正则, 目标分类)
 /// 命中的域名不会落入 direct / apac，用于保障 AWS 中国区解析与 CDN 走 AI 组
 pub const OVERRIDE_DIRECT_PATTERNS: &[(&str, &str)] = &[

@@ -5,7 +5,11 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
 use crate::Result;
-use crate::config::SOURCES;
+use crate::config::{LOWRATE_OVERRIDE_KEY, SOURCES};
+
+pub fn all_ruleset_keys() -> Vec<&'static str> {
+    SOURCES.iter().map(|category| category.key).chain(std::iter::once(LOWRATE_OVERRIDE_KEY)).collect()
+}
 
 /// 优先使用仓库 bin/ 下的二进制，其次在 PATH 中查找
 pub fn require_binary(root: &Path, name: &str) -> Result<PathBuf> {
@@ -32,15 +36,20 @@ pub fn run(root: &Path) -> Result<ExitCode> {
     let mihomo_dir = root.join("rules").join("mihomo");
     let singbox_dir = root.join("rules").join("singbox");
 
+    let keys = all_ruleset_keys();
+
     println!("[*] 开始编译 Mihomo 二进制规则集 (.mrs)...");
-    for category in SOURCES.iter().map(|category| category.key) {
-        println!("  -> 编译 Mihomo: {category}.mrs (domain)");
-        check(
-            Command::new(&mihomo)
-                .args(["convert-ruleset", "domain", "yaml"])
-                .arg(mihomo_dir.join(format!("{category}.yaml")))
-                .arg(mihomo_dir.join(format!("{category}.mrs"))),
-        )?;
+    for category in &keys {
+        let domain_source = mihomo_dir.join(format!("{category}.yaml"));
+        if domain_source.is_file() {
+            println!("  -> 编译 Mihomo: {category}.mrs (domain)");
+            check(
+                Command::new(&mihomo)
+                    .args(["convert-ruleset", "domain", "yaml"])
+                    .arg(&domain_source)
+                    .arg(mihomo_dir.join(format!("{category}.mrs"))),
+            )?;
+        }
 
         let ip_source = mihomo_dir.join(format!("{category}_ip.yaml"));
         if ip_source.is_file() {
@@ -55,15 +64,18 @@ pub fn run(root: &Path) -> Result<ExitCode> {
     }
 
     println!("[*] 开始编译 Sing-box 二进制规则集 (.srs)...");
-    for category in SOURCES.iter().map(|category| category.key) {
-        println!("  -> 编译 Sing-box: {category}.srs");
-        check(
-            Command::new(&singbox)
-                .args(["rule-set", "compile"])
-                .arg(singbox_dir.join(format!("{category}.json")))
-                .arg("-o")
-                .arg(singbox_dir.join(format!("{category}.srs"))),
-        )?;
+    for category in &keys {
+        let source = singbox_dir.join(format!("{category}.json"));
+        if source.is_file() {
+            println!("  -> 编译 Sing-box: {category}.srs");
+            check(
+                Command::new(&singbox)
+                    .args(["rule-set", "compile"])
+                    .arg(&source)
+                    .arg("-o")
+                    .arg(singbox_dir.join(format!("{category}.srs"))),
+            )?;
+        }
     }
 
     println!("[*] 全部二进制规则编译完成！");
