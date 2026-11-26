@@ -1,7 +1,7 @@
 # CLAUDE.md — Proxy Rulesets 项目维护规范
 
 ## 项目定位
-多平台规则集编译仓库，将 DustinWin、MetaCubeX、echs-top、GinsRule-git 等上游分散规则及自定义白名单解构、合并、去重，统一编译并导出为 4 大核心流向规则：
+多平台规则集编译仓库，将 DustinWin、MetaCubeX、echs-top、Gins-Rules (rules.ichimarugin728.dev) 等上游分散规则及自定义白名单解构、合并、去重，统一编译并导出为 4 大核心流向规则：
 - `direct` (走直连)
 - `apac` (走亚太)
 - `ai` (走 AI)

@@ -26,9 +26,9 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games@cn.list",
-            # GinsRule-git
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/direct/direct-list.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/steam.list",
+            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/direct/direct-list.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/steam.list",
         ],
     },
     "apac": {
@@ -41,10 +41,10 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/x.list",
             # echs-top
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/ip/telegram.list",
-            # GinsRule-git
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/telegram.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/twitter.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/ip/telegram.list",
+            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/telegram.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/twitter.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/ip/telegram.list",
         ],
     },
     "ai": {
@@ -60,8 +60,9 @@ SOURCES = {
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.list",
             "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.list",
-            # GinsRule-git
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/ai-other.list",
+            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/ai-other.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/ip/asn-google.list",
         ],
     },
     "lowrate": {
@@ -81,15 +82,15 @@ SOURCES = {
             # echs-top
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy.list",
             "https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy-ltsc.list",
-            # GinsRule-git
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/github.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/netflix.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/disney.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/hbo.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/spotify.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/appletv.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/proxy-list.list",
-            "https://fastly.jsdelivr.net/gh/DonJone/GinsRule-git@master/rules/shadowrocket/proxy/gfw-list.list",
+            # Gins-Rules (原 GinsRule-git，现由 R2/Worker 分发)
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/github.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/netflix.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/disney.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/hbo.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/spotify.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/appletv.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/proxy-list.list",
+            "https://rules.ichimarugin728.dev/ruleset/shadowrocket/proxy/gfw-list.list",
         ],
     },
 }
