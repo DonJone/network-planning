@@ -20,10 +20,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Cache Cargo
+        uses: actions/cache@v4
         with:
-          python-version: "3.10"
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+            gins-rules/infra/aggregator/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'gins-rules/infra/aggregator/Cargo.lock') }}
+
+      - name: Build network-planning
+        run: cargo build --release --locked
 
       - name: Sync Gins-Rules Upstream Sources
         working-directory: gins-rules
@@ -32,9 +40,10 @@ jobs:
           cargo run --manifest-path infra/aggregator/Cargo.toml --release -- normalize
 
       - name: Sync Gins-Rules CDN Snapshot
-        run: python3 scripts/sync_gins_cdn.py
+        run: ./target/release/network-planning sync-cdn
 
       - name: Commit Synced Gins-Rules Sources
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -45,8 +54,7 @@ jobs:
           fi
 
       - name: Fetch and Generate Rule Sources
-        run: |
-          python3 scripts/build.py
+        run: ./target/release/network-planning build
 
       - name: Install Compilers (Mihomo & Sing-box)
         run: |
@@ -62,11 +70,17 @@ jobs:
           rm -rf /tmp/singbox
 
       - name: Compile Binary Rules (.mrs & .srs)
-        run: |
-          chmod +x scripts/compile.sh
-          ./scripts/compile.sh
+        run: ./target/release/network-planning compile
+
+      - name: Upload Rulesets Artifact (non-main)
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulesets
+          path: rules/
 
       - name: Deploy to Release Branch
+        if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
