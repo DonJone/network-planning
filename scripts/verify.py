@@ -150,13 +150,13 @@ rule-providers:
     path: {RULES_DIR}/mihomo/lowrate_ip.mrs
 rules:
   - RULE-SET,rule_direct,DIRECT
-  - RULE-SET,rule_direct_ip,DIRECT
   - RULE-SET,rule_apac,DIRECT
-  - RULE-SET,rule_apac_ip,DIRECT
   - RULE-SET,rule_ai,DIRECT
-  - RULE-SET,rule_ai_ip,DIRECT
   - RULE-SET,rule_lowrate,DIRECT
-  - RULE-SET,rule_lowrate_ip,DIRECT
+  - RULE-SET,rule_direct_ip,DIRECT,no-resolve
+  - RULE-SET,rule_apac_ip,DIRECT,no-resolve
+  - RULE-SET,rule_ai_ip,DIRECT,no-resolve
+  - RULE-SET,rule_lowrate_ip,DIRECT,no-resolve
   - MATCH,DIRECT
 """
     with open(cfg_path, "w", encoding="utf-8") as f:
@@ -196,10 +196,11 @@ rules:
     mihomo_pass = 0
     for domain, expected_cat, desc in TEST_CASES:
         expected_tag = f"rule_{expected_cat}"
-        # 匹配日志中的 match RuleSet(rule_xxx)
+        # 匹配日志中的 match RuleSet(rule_xxx)，以及拨号失败时的 (match RuleSet/rule_xxx)
+        markers = (f"match RuleSet({expected_tag})", f"match RuleSet/{expected_tag})")
         matched = False
         for line in log_content.splitlines():
-            if domain in line and f"match RuleSet({expected_tag})" in line:
+            if f"--> {domain}:" in line and any(m in line for m in markers):
                 matched = True
                 break
         if matched:
