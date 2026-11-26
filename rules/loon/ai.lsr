@@ -439,7 +439,6 @@ DOMAIN-SUFFIX,cloudfront-cn.net
 DOMAIN-SUFFIX,cloudfront-test.cn
 DOMAIN-SUFFIX,cloudfront.cn
 DOMAIN-SUFFIX,cloudfront.com
-DOMAIN-SUFFIX,cloudfront.net
 DOMAIN-SUFFIX,cloudfunctions.net
 DOMAIN-SUFFIX,cloudproxy.app
 DOMAIN-SUFFIX,cloudrobotics.com
@@ -466,10 +465,6 @@ DOMAIN-SUFFIX,cookiechoices.org
 DOMAIN-SUFFIX,coova.com
 DOMAIN-SUFFIX,coova.net
 DOMAIN-SUFFIX,coova.org
-DOMAIN-SUFFIX,copilot-proxy.githubusercontent.com
-DOMAIN-SUFFIX,copilot-telemetry-service.githubusercontent.com
-DOMAIN-SUFFIX,copilot-telemetry.githubusercontent.com
-DOMAIN-SUFFIX,copilot-workspace.githubnext.com
 DOMAIN-SUFFIX,copilot.cloud.microsoft
 DOMAIN-SUFFIX,copilot.microsoft.com
 DOMAIN-SUFFIX,coze.com
@@ -596,13 +591,6 @@ DOMAIN-SUFFIX,get.rsvp
 DOMAIN-SUFFIX,getbumptop.com
 DOMAIN-SUFFIX,ggoogle.com
 DOMAIN-SUFFIX,gipscorp.com
-DOMAIN-SUFFIX,github-cloud.s3.amazonaws.com
-DOMAIN-SUFFIX,github-production-release-asset-2e65be.s3.amazonaws.com
-DOMAIN-SUFFIX,github-production-repository-file-5c1aeb.s3.amazonaws.com
-DOMAIN-SUFFIX,github-production-repository-image-32fea6.s3.amazonaws.com
-DOMAIN-SUFFIX,github-production-upload-manifest-file-7fdce7.s3.amazonaws.com
-DOMAIN-SUFFIX,github-production-user-asset-6210df.s3.amazonaws.com
-DOMAIN-SUFFIX,githubcopilot.com
 DOMAIN-SUFFIX,gkecnapps.cn
 DOMAIN-SUFFIX,gle
 DOMAIN-SUFFIX,globaledu.org
@@ -1342,7 +1330,6 @@ DOMAIN,aidemos.meta.com
 DOMAIN,anthropic-com.ghost.io
 DOMAIN,anthropic.com.cdn.cloudflare.net
 DOMAIN,api.cloudflare.com
-DOMAIN,api.github.com
 DOMAIN,api.msn.com
 DOMAIN,api.statsig.com
 DOMAIN,api.x.ai
