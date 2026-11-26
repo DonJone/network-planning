@@ -17,3 +17,15 @@ DOMAIN-SUFFIX,googletagmanager-cn.com
 DOMAIN-SUFFIX,gstatic.com
 DOMAIN-SUFFIX,googleusercontent.com
 DOMAIN-SUFFIX,googleapis.com
+# AWS 控制台 / EC2 机器申请 / IAM Identity Center / AWS Quick (QuickSight) 核心服务
+DOMAIN-SUFFIX,aws.amazon.com
+DOMAIN-SUFFIX,signin.aws
+DOMAIN-SUFFIX,aws.a2z.com
+DOMAIN-SUFFIX,awsapps.com
+DOMAIN-SUFFIX,awsstatic.com
+DOMAIN-SUFFIX,amazonaws.com
+DOMAIN-SUFFIX,amazoncognito.com
+DOMAIN-SUFFIX,amazontrust.com
+DOMAIN-SUFFIX,aws.com
+DOMAIN-SUFFIX,aws.dev
+DOMAIN-SUFFIX,aws

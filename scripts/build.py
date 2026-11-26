@@ -5,13 +5,14 @@
 """
 
 import os
+import re
 import sys
 import json
 import time
 import urllib.request
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from config import SOURCES
+from config import SOURCES, OVERRIDE_DIRECT_PATTERNS
 from parser import RuleParser
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -212,6 +213,26 @@ def main():
     direct_custom_domains = {val for rtype, val in load_local_file("custom/direct_custom.txt") if rtype in ("DOMAIN-SUFFIX", "DOMAIN")}
     lowrate_custom_domains = {val for rtype, val in load_local_file("custom/lowrate_custom.txt") if rtype in ("DOMAIN-SUFFIX", "DOMAIN")}
 
+    # 4. override_direct 中的域名（如 AWS 国际站与中国区）强制归属对应分类，严禁被 direct 国内大盘吞掉
+    override_direct_domains = {}
+    for cat_key, cat_data in SOURCES.items():
+        for url in cat_data.get("override_direct", []):
+            for rtype, val in fetch_url(url):
+                if rtype in ("DOMAIN-SUFFIX", "DOMAIN"):
+                    override_direct_domains[val] = cat_key
+    override_direct_regexes = [(re.compile(p), cat) for p, cat in OVERRIDE_DIRECT_PATTERNS]
+
+    def override_category(domain: str):
+        parts = domain.split(".")
+        for i in range(len(parts)):
+            cat = override_direct_domains.get(".".join(parts[i:]))
+            if cat:
+                return cat
+        for regex, cat in override_direct_regexes:
+            if regex.search(domain):
+                return cat
+        return None
+
     def is_youtube_or_streaming(domain: str) -> bool:
         if domain in lowrate_custom_domains:
             return True
@@ -242,14 +263,21 @@ def main():
     priority_order = ["direct", "apac", "ai", "lowrate"]
     seen_domains = set()
     seen_ips = set()
+    forced_moves = {cat: [] for cat in priority_order}
 
     for cat_key in priority_order:
-        raw_rules = categories_rules[cat_key]
+        raw_rules = categories_rules[cat_key] + forced_moves[cat_key]
 
         # 剔除与高优先级分类冲突的规则
         filtered_rules = []
         for rtype, val in raw_rules:
             # 权威冲突保护：
+            if rtype in ("DOMAIN-SUFFIX", "DOMAIN"):
+                forced_cat = override_category(val)
+                if forced_cat and forced_cat != cat_key and cat_key in ("direct", "apac"):
+                    # AWS 等强制分流域名不得落入 direct / apac，转交给目标分类
+                    forced_moves[forced_cat].append((rtype, val))
+                    continue
             if cat_key == "direct" and rtype in ("DOMAIN-SUFFIX", "DOMAIN") and (
                 val in apac_custom_domains or "github" in val.lower() or is_apple_proxy_service(val)
             ):

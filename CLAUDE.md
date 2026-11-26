@@ -38,6 +38,8 @@ network-planning/
 跨分类去重严格遵循：
 `direct` (直连白名单最高优先级) -> `apac` (即时通讯优先保障) -> `ai` (AI 与核心服务) -> `lowrate` (流媒体及兜底大盘)
 
+例外：`config.py` 中 `override_direct` 来源与 `OVERRIDE_DIRECT_PATTERNS` 正则命中的域名（AWS 国际站与中国区、AWS Quick）强制归入 `ai`，不受 direct/apac 优先级吞并。
+
 ## 构建与运行
 ```bash
 python3 scripts/build.py
