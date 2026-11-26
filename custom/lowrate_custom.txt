@@ -14,6 +14,13 @@ DOMAIN,music.youtube.com
 DOMAIN,youtubei.googleapis.com
 DOMAIN-KEYWORD,youtube
 
+# YouTube 头像/缩略图 (ggpht)、配音与教育站点 (防止被 google.list 归入 AI 或被国内大盘误吞为直连)
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,ggpht.cn
+DOMAIN-SUFFIX,youtube-dubbing.com
+DOMAIN-SUFFIX,youtubeeducation.com
+DOMAIN,redirector.c.youtubeeducation.com
+
 # Google 相册与网盘分流
 DOMAIN-SUFFIX,photos.google.com
 DOMAIN-SUFFIX,photos.googleapis.com

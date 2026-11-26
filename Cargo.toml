@@ -1,0 +1,13 @@
+[package]
+name = "network-planning"
+version = "0.1.0"
+edition = "2024"
+description = "多平台代理规则集编译器：抓取、解构、去重并导出 direct / apac / ai / lowrate 四大分类"
+publish = false
+
+[dependencies]
+ipnet = "2"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = "2"
