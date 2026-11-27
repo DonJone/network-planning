@@ -6,7 +6,7 @@
     "custom:custom/direct_custom.txt": 43,
     "custom:custom/lowrate_custom.txt": 135,
     "gins:asn/asn-google": 5334,
-    "gins:direct/direct-list": 304119,
+    "gins:direct/direct-list": 304090,
     "gins:ip/telegram": 37,
     "gins:proxy/ai-other": 575,
     "gins:proxy/appletv": 12,
@@ -15,12 +15,12 @@
     "gins:proxy/github": 60,
     "gins:proxy/hbo": 14,
     "gins:proxy/netflix": 3936,
-    "gins:proxy/proxy-list": 60626,
+    "gins:proxy/proxy-list": 60492,
     "gins:proxy/spotify": 68,
     "gins:proxy/steam": 64,
     "gins:proxy/telegram": 104,
     "gins:proxy/twitter": 80,
-    "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.list": 7090,
+    "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.list": 6915,
     "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.list": 1668,
     "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple@cn.list": 302,
     "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/aws.list": 77,
@@ -39,26 +39,26 @@
     "remote:https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.list": 178,
     "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/cn.list": 32713,
     "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/dnsmasq-china.list": 109486,
-    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy-ltsc.list": 18465,
-    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy.list": 20804,
-    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/ip/cn.list": 10109,
+    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy-ltsc.list": 18467,
+    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/domain/proxy.list": 20806,
+    "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/ip/cn.list": 10055,
     "remote:https://fastly.jsdelivr.net/gh/echs-top/proxy@main/list/ip/telegram.list": 11,
     "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/ai.list": 225,
     "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/media.list": 1283,
     "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/mediaip.list": 924,
     "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/private.list": 141,
     "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/privateip.list": 28,
-    "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/trackerslist.list": 113
+    "remote:https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/trackerslist.list": 114
   },
   "categories": {
     "ai": {
       "suffixes": 1316,
       "domains": 26,
       "keywords": 7,
-      "ips": 9086,
+      "ips": 8913,
       "exclude_suffixes": 53,
       "exclude_domains": 1,
-      "total": 10435
+      "total": 10262
     },
     "apac": {
       "suffixes": 69,
@@ -73,19 +73,19 @@
       "suffixes": 145630,
       "domains": 147,
       "keywords": 18,
-      "ips": 16961,
+      "ips": 16933,
       "exclude_suffixes": 0,
       "exclude_domains": 0,
-      "total": 162756
+      "total": 162728
     },
     "lowrate": {
-      "suffixes": 30284,
-      "domains": 1745,
-      "keywords": 161,
+      "suffixes": 30151,
+      "domains": 1744,
+      "keywords": 165,
       "ips": 2528,
       "exclude_suffixes": 0,
       "exclude_domains": 0,
-      "total": 34718
+      "total": 34588
     },
     "lowrate_override": {
       "suffixes": 53,
