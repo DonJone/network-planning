@@ -26,6 +26,7 @@ DOMAIN,api.x.ai
 DOMAIN,appsgenaiserver-pa.clients.google.com
 DOMAIN,appsgenaiserver-pa.clients6.google.com
 DOMAIN,appsgenaiserver-pa.googleapis.com
+DOMAIN,ar-genai.graph.meta.com
 DOMAIN,assets.msn.com
 DOMAIN,aws-language-servers.us-east-1.amazonaws.com
 DOMAIN,aws-toolkit-language-servers.amazonaws.com
@@ -50,6 +51,8 @@ DOMAIN,codewhisperer.us-east-1.amazonaws.com
 DOMAIN,cognito-identity.us-east-1.amazonaws.com
 DOMAIN,console.mistral.ai
 DOMAIN,copilot-proxy.githubusercontent.com
+DOMAIN,copilot-telemetry-service.githubusercontent.com
+DOMAIN,copilot-telemetry.githubusercontent.com
 DOMAIN,copilot-workspace.githubnext.com
 DOMAIN,copilot.microsoft.com
 DOMAIN,copilotprodattachments.blob.core.windows.net
@@ -65,19 +68,23 @@ DOMAIN,geller-pa.googleapis.com
 DOMAIN,gemini.google.com
 DOMAIN,geminiweb-pa.clients.google.com
 DOMAIN,geminiweb-pa.clients6.google.com
+DOMAIN,genai-hatch-realtime.facebook.com
 DOMAIN,generativeai.google
 DOMAIN,generativelanguage.googleapis.com
+DOMAIN,hatch.ecto1.ai
 DOMAIN,host.livekit.cloud
 DOMAIN,idetoolkits-hostedfiles.amazonaws.com
 DOMAIN,idetoolkits.amazonwebservices.com
 DOMAIN,imagine.meta.com
 DOMAIN,in.appcenter.ms
-DOMAIN,inference.codeium.com
 DOMAIN,jules.google.com
 DOMAIN,llama.developer.meta.com
 DOMAIN,location.microsoft.com
 DOMAIN,makersuite.google.com
+DOMAIN,meta-ai-realtime.facebook.com
+DOMAIN,node.hatch.one
 DOMAIN,notebooklm-pa.googleapis.com
+DOMAIN,notebooklm.google.com
 DOMAIN,notebooklm.googleapis.com
 DOMAIN,odc.officeapps.live.com
 DOMAIN,openai-api.arkoselabs.com
@@ -85,6 +92,7 @@ DOMAIN,openai.com.cdn.cloudflare.net
 DOMAIN,openaiapi-site.azureedge.net
 DOMAIN,openaiassets.blob.core.windows.net
 DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+DOMAIN,openaicom.imgix.net
 DOMAIN,openaicomproductionae4b.blob.core.windows.net
 DOMAIN,openrouter.ai
 DOMAIN,ppl-ai-file-upload.s3.amazonaws.com
@@ -103,7 +111,6 @@ DOMAIN,services.bingapis.com
 DOMAIN,static.cloudflareinsights.com
 DOMAIN,storage.googleapis.com
 DOMAIN,sydney.bing.com
-DOMAIN,trae-api-sg.mchost.guru
 DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com
 DOMAIN,www.bing.com
 DOMAIN-KEYWORD,alkalimakersuite-pa.clients6.google.com
@@ -139,11 +146,7 @@ DOMAIN-SUFFIX,api.microsoftapp.net
 DOMAIN-SUFFIX,api.revenuecat.com
 DOMAIN-SUFFIX,api.statsig.com
 DOMAIN-SUFFIX,apis.google.com
-DOMAIN-SUFFIX,apple-relay.akamaized.net
-DOMAIN-SUFFIX,apple-relay.apple.com
-DOMAIN-SUFFIX,apple-relay.cloudflare.com
 DOMAIN-SUFFIX,apple-relay.fastly-edge.com
-DOMAIN-SUFFIX,apps.mzstatic.com
 DOMAIN-SUFFIX,atmeta.com
 DOMAIN-SUFFIX,augmentcode.com
 DOMAIN-SUFFIX,auth0.com
@@ -199,6 +202,9 @@ DOMAIN-SUFFIX,comfyregistry.org
 DOMAIN-SUFFIX,commandcode.ai
 DOMAIN-SUFFIX,console.aws.a2z.com
 DOMAIN-SUFFIX,continue.dev
+DOMAIN-SUFFIX,copilot-stg.com
+DOMAIN-SUFFIX,copilot.cloud.microsoft
+DOMAIN-SUFFIX,copilot.com
 DOMAIN-SUFFIX,copilot.microsoft.com
 DOMAIN-SUFFIX,coze.com
 DOMAIN-SUFFIX,cp4.cloudflare.com
@@ -209,6 +215,7 @@ DOMAIN-SUFFIX,cursor.com
 DOMAIN-SUFFIX,cursor.sh
 DOMAIN-SUFFIX,cursorapi.com
 DOMAIN-SUFFIX,cursorvm.com
+DOMAIN-SUFFIX,customer.prod.willow606.com
 DOMAIN-SUFFIX,deepinfra.com
 DOMAIN-SUFFIX,deepmind.com
 DOMAIN-SUFFIX,deepmind.google
@@ -234,7 +241,6 @@ DOMAIN-SUFFIX,flow.google
 DOMAIN-SUFFIX,flow.google.com
 DOMAIN-SUFFIX,g.ai
 DOMAIN-SUFFIX,gamma.app
-DOMAIN-SUFFIX,gateway.icloud.com
 DOMAIN-SUFFIX,gatewayai.com
 DOMAIN-SUFFIX,geller-pa.googleapis.com
 DOMAIN-SUFFIX,gemini.google
@@ -251,7 +257,9 @@ DOMAIN-SUFFIX,grazie.aws.intellij.net
 DOMAIN-SUFFIX,grok.com
 DOMAIN-SUFFIX,grok.x.com
 DOMAIN-SUFFIX,grokbot.com
+DOMAIN-SUFFIX,grokcli.io
 DOMAIN-SUFFIX,grokipedia.com
+DOMAIN-SUFFIX,grokusercontent.com
 DOMAIN-SUFFIX,groq.com
 DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com
 DOMAIN-SUFFIX,guzzoni.apple.com
@@ -397,7 +405,6 @@ DOMAIN-SUFFIX,youmind.site
 DOMAIN-SUFFIX,zed.dev
 IP-CIDR,129.146.3.78/32,no-resolve
 IP-CIDR,160.79.104.0/21,no-resolve
-IP-CIDR,160.79.104.0/23,no-resolve
 IP-CIDR,199.47.142.0/23,no-resolve
 IP-CIDR,205.164.56.29/24,no-resolve
 IP-CIDR,24.199.123.28/32,no-resolve
@@ -407,4 +414,4 @@ IP-CIDR,64.23.132.171/32,no-resolve
 IP-CIDR,69.46.75.0/24,no-resolve
 IP-CIDR6,2604:F20::/32,no-resolve
 IP-CIDR6,2607:6BC0::/32,no-resolve
-IP-CIDR6,2607:6bc0::/48,no-resolve
+IP-CIDR6,2607:6bc0::/32,no-resolve
