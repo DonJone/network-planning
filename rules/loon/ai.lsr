@@ -115,9 +115,6 @@ DOMAIN-SUFFIX,app-analytics-services-att.com
 DOMAIN-SUFFIX,appbridge.ca
 DOMAIN-SUFFIX,appbridge.io
 DOMAIN-SUFFIX,appbridge.it
-DOMAIN-SUFFIX,apple-relay.akamaized.net
-DOMAIN-SUFFIX,apple-relay.apple.com
-DOMAIN-SUFFIX,apple-relay.cloudflare.com
 DOMAIN-SUFFIX,apple-relay.fastly-edge.com
 DOMAIN-SUFFIX,appsgenaiserver-pa.clients.google.com
 DOMAIN-SUFFIX,appsgenaiserver-pa.clients6.google.com
@@ -480,6 +477,7 @@ DOMAIN-SUFFIX,cursor.com
 DOMAIN-SUFFIX,cursor.sh
 DOMAIN-SUFFIX,cursorapi.com
 DOMAIN-SUFFIX,cursorvm.com
+DOMAIN-SUFFIX,customer.prod.willow606.com
 DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com
 DOMAIN-SUFFIX,dart.dev
 DOMAIN-SUFFIX,dartlang.org
@@ -567,7 +565,6 @@ DOMAIN-SUFFIX,g.page
 DOMAIN-SUFFIX,gamma.app
 DOMAIN-SUFFIX,gateway.ai.cloudflare.com
 DOMAIN-SUFFIX,gateway.dev
-DOMAIN-SUFFIX,gateway.icloud.com
 DOMAIN-SUFFIX,gatewayai.com
 DOMAIN-SUFFIX,gbiz
 DOMAIN-SUFFIX,gcr.io
@@ -858,6 +855,8 @@ DOMAIN-SUFFIX,grazie.ai
 DOMAIN-SUFFIX,grazie.aws.intellij.net
 DOMAIN-SUFFIX,gridaware.app
 DOMAIN-SUFFIX,grok.x.com
+DOMAIN-SUFFIX,grokcli.io
+DOMAIN-SUFFIX,grokusercontent.com
 DOMAIN-SUFFIX,groq.com
 DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com
 DOMAIN-SUFFIX,gsrc.io
@@ -1333,6 +1332,7 @@ DOMAIN,api.cloudflare.com
 DOMAIN,api.msn.com
 DOMAIN,api.statsig.com
 DOMAIN,api.x.ai
+DOMAIN,ar-genai.graph.meta.com
 DOMAIN,assets.msn.com
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,browser-intake-us5-datadoghq.com
@@ -1341,9 +1341,13 @@ DOMAIN,cdn.usefathom.com
 DOMAIN,developer.meta.com
 DOMAIN,gateway.bingviz.microsoft.net
 DOMAIN,gateway.bingviz.microsoftapp.net
+DOMAIN,genai-hatch-realtime.facebook.com
+DOMAIN,hatch.ecto1.ai
 DOMAIN,imagine.meta.com
 DOMAIN,in.appcenter.ms
 DOMAIN,llama.developer.meta.com
+DOMAIN,meta-ai-realtime.facebook.com
+DOMAIN,node.hatch.one
 DOMAIN,odc.officeapps.live.com
 DOMAIN,openai-api.arkoselabs.com
 DOMAIN,self.events.data.microsoft.com
@@ -4564,7 +4568,6 @@ IP-CIDR,159.254.144.0/21,no-resolve
 IP-CIDR,16.216.88.0/23,no-resolve
 IP-CIDR,160.30.211.0/24,no-resolve
 IP-CIDR,160.79.104.0/21,no-resolve
-IP-CIDR,160.79.104.0/23,no-resolve
 IP-CIDR,160.79.106.0/24,no-resolve
 IP-CIDR,161.223.186.0/24,no-resolve
 IP-CIDR,161.38.184.0/24,no-resolve
@@ -9400,7 +9403,6 @@ IP-CIDR,2607:4240:4004::/47,no-resolve
 IP-CIDR,2607:4240::/47,no-resolve
 IP-CIDR,2607:6bc0:8007::/48,no-resolve
 IP-CIDR,2607:6bc0::/32,no-resolve
-IP-CIDR,2607:6bc0::/48,no-resolve
 IP-CIDR,2607:8d40:ff0::/48,no-resolve
 IP-CIDR,2607:9180:1000::/40,no-resolve
 IP-CIDR,2607:9180:2000::/40,no-resolve
